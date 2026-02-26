@@ -5,6 +5,10 @@
 #include "dial.h"
 #include "display.h"
 
+extern int selected_channel;
+const extern int min_channel;
+const extern int max_channel;
+
 // uses a dial and display to select a numerical I2C channel (int).
 class Selector {
 public:
@@ -16,13 +20,10 @@ public:
 
   int get_channel();
 
+
 private:
-  int channel;
   void channel_up();
   void channel_down();
-  const int min_channel = 0x08;        // = 8 -- https://i2cdevices.org/addresses
-  const int max_channel = 0x77;        // 0x77 = 119
-  // note: 192 - 8 = 184 = 8x23 => 32x23 char 'display'
 
   Dial* dial = nullptr;
   Display* display = nullptr;

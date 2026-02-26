@@ -2,16 +2,23 @@
 
 #include "Arduino.h"
 
+int selected_channel = min_channel;
+  const int min_channel = 0x08;        // = 8 -- https://i2cdevices.org/addresses
+  const int max_channel = 0x77;        // 0x77 = 119
+  // note: 192 - 8 = 184 = 8x23 => 32x23 char 'display'
+
+
 Selector::Selector(const Hardware& hardware) : hardware(hardware) {
   button_down = false;
+  selected_channel = min_channel;
 }
 
 Selector::Selector(Dial* dial, Display* display, bool button=false, const Hardware& hardware)
   : dial(dial), display(display), button_down(button), hardware(hardware) { }
 
 void Selector::channel_up() {
-  if (channel < max_channel) {
-    channel++;
+  if (selected_channel < max_channel) {
+    selected_channel++;
   } else {
     Serial.print("max channel = ");
     echo();
@@ -19,8 +26,8 @@ void Selector::channel_up() {
 }
 
 void Selector::channel_down() {
-  if (channel > min_channel)  {
-    channel--;
+  if (selected_channel > min_channel)  {
+    selected_channel--;
   } else {
     Serial.println();
     Serial.print("min channel = ");
@@ -37,14 +44,13 @@ char Selector::hex_digit(int value) {
 void Selector::display_channel() {
   display->put_char(0, '0');
   display->put_char(1, 'x');
-  display->put_char(2, hex_digit(channel / 16));
-  display->put_char(3, hex_digit(channel % 16));
+  display->put_char(2, hex_digit(selected_channel / 16));
+  display->put_char(3, hex_digit(selected_channel % 16));
 }
 
 
 int Selector::get_channel() {
   Serial.print("channel: ");
-  Dial local_dial(hardware);;
   display_channel();
   long value = dial->value();
   dial->update();
@@ -68,9 +74,9 @@ int Selector::get_channel() {
   echo();
   Serial.println(".");
   Serial.print("channel ");
-  Serial.println(channel);
+  Serial.println(selected_channel);
   dial->zero();
-  return channel;  
+  return selected_channel;  
 }
 
 int Selector::count() {

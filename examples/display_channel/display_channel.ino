@@ -9,7 +9,6 @@
 #include "Wire.h"
 
 DisplayDevice* device;
-Display display;
 Hardware hardware = { };
 
 int channel;
@@ -63,13 +62,13 @@ void check_cleanup() {
 void setup() {
   Serial.begin(9600);
   Serial.println("starting character display.");
-  Serial.println("start ms: " + String(start_millis));
   uno_io(hardware);
+  device = new DisplayDevice(hardware);
   Dial dial;
-  dial_device = new DialDevice(hardware);
+  DialDevice dial_device(hardware);
   dial.attach(&dial_device);
-
-  display.attach(&device);
+  Display display;
+  display.attach(device);
   channel = Selector(&dial, &display).get_channel();
   Serial.print("selected: ");
   Serial.println(channel);
@@ -87,6 +86,6 @@ void log_status() {
 
 void loop() {
   check_cleanup();
-  device.refresh();
+  device->refresh();
   log_status();
 }

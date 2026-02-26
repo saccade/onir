@@ -7,6 +7,12 @@ The name 'onir' may sound dreamy, but it's also short for "oh, nothing I'd recom
 
 # updates
 
+2025-02-26:
+
+Get display_channel working. (uses channel selector.)
+
+Again, mostly just a matter of "is that plugged in? yes? what about that? ah..."
+
 2025-02-25:
 
 Sliced out little bits of the Interface code in manageable chunks until I couldn't work out how to get more out without function template evasion shenanigans. Then I switched modes into "delete it all and sort it out later."
