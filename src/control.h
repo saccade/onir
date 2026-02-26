@@ -7,6 +7,7 @@
 
 class Control {
 public:
+  Control(const Hardware& hardware = no_hardware);
   Control(int* channels, int count, const Hardware& hardware = no_hardware);
 
   void update();

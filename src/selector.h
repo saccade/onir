@@ -14,7 +14,7 @@ class Selector {
 public:
   Selector(Dial* dial, Display* display, bool button=false, const Hardware& hardware = no_hardware);
 
-  Selector(const Hardware& hardware = no_hardware); 
+  Selector(bool button = false, const Hardware& hardware = no_hardware); 
 
   void set_button(bool button) { button_down = button; }
 

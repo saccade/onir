@@ -6,7 +6,7 @@
 
 Onir::Onir(int* channels, int count, const Hardware& hardware) : hardware(hardware) {
   control = new Control(channels, count, hardware);
-  screen = new Screen(control);
+  screen = new Screen(control, hardware);
 }
 
 void Onir::display(char* message) {

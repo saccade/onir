@@ -33,9 +33,9 @@ public:
     display->refresh();
 
     if (state.dial.button) {
-      Selector selector(hardware);
-      selector.set_button(state.dial.button);
-      reboot_channel = selector.get_channel();
+     Selector selector(hardware);
+     selector.set_button(state.dial.button);
+     reboot_channel = selector.get_channel();
     }
   }
 

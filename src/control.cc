@@ -2,6 +2,9 @@
 
 #include "Arduino.h"
 
+Control::Control(const Hardware& hardware = no_hardware) : hardware(hardware) {
+  
+}
 
 Control::Control(int* channels, int ct, const Hardware& hardware) : hardware(hardware) {
   count_ = ct;

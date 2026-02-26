@@ -10,11 +10,13 @@
 class Screen {
 
 public:
-  Screen(const Hardware& hw = no_hardware) {
+  Screen(const Hardware& hardware = no_hardware) {
+    control = new Control(hardware)
     clear();
   }
   
-  Screen(Control* control, const Hardware& hw = no_hardware) : control_(control), hardware(hw) {
+  Screen(Control* control, const Hardware& hardware = no_hardware)
+    : control_(control), hardware(hardware) {
     clear();
   }
 

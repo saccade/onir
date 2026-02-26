@@ -8,13 +8,16 @@ int selected_channel = min_channel;
   // note: 192 - 8 = 184 = 8x23 => 32x23 char 'display'
 
 
-Selector::Selector(const Hardware& hardware) : hardware(hardware) {
-  button_down = false;
-  selected_channel = min_channel;
+Selector::Selector(bool button, const Hardware& hardware) :
+  hardware(hardware), button_down(button) {
+  dial = new Dial(hardware);
+  display = new Display(hardware);
 }
 
-Selector::Selector(Dial* dial, Display* display, bool button=false, const Hardware& hardware)
-  : dial(dial), display(display), button_down(button), hardware(hardware) { }
+Selector::Selector(Dial* dial, Display* display, bool button, const Hardware& hardware)
+  : dial(dial), display(display), button_down(button), hardware(hardware) {
+  button_down = false;
+}
 
 void Selector::channel_up() {
   if (selected_channel < max_channel) {
@@ -48,7 +51,6 @@ void Selector::display_channel() {
   display->put_char(3, hex_digit(selected_channel % 16));
 }
 
-
 int Selector::get_channel() {
   Serial.print("channel: ");
   display_channel();
@@ -80,20 +82,11 @@ int Selector::get_channel() {
 }
 
 int Selector::count() {
-  if (button_down) {
-    Serial.println(button_down);
-    return dial->down_value();
-  } else {
-    return dial->value();
-  }
+  return dial->value() + dial->down_value();
 }
 
 bool Selector::done() {
-  if (button_down) {
-    return dial->release();
-  } else {
-    return dial->press();
-  }
+  return dial->release();
 }
 
 void Selector::echo() {

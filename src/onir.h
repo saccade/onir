@@ -32,7 +32,7 @@ class Screen;
 
 class Onir {
 public:
-  Onir(int* channels, int count, const Hardware& hw = no_hardware);
+  Onir(int* channels, int count, const Hardware& hardware = no_hardware);
 
   void Onir::display(char* message);
 

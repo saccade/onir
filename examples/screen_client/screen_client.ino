@@ -1,23 +1,21 @@
 #include "onir.h"
 #include "control.h"
-#include "log.h"
 #include "screen.h"
-#include "uno_pinout.h"
 #include "uno_io.h"
+#include "log.h"
 
 #include "Wire.h"
 
 const int N_CHANNELS = 5;
 int channels[N_CHANNELS] = { 8, 9, 10, 11, 12 };
-//Onir onir(channels, N_CHANNELS);
+
 Onir* onir;
 Hardware hardware = {};
 
-int* pinout = set_uno_pinout(init_interface);
-
 IOState state;
+//const char message[64] = "ko labs -- onir --";
+const char message[64] = "1 at a time";
 
-const char message[64] = "ko labs -- onir --";
 
 void setup() {
   Serial.begin(9600);
@@ -26,7 +24,6 @@ void setup() {
   uno_io(hardware);
   onir = new Onir(channels, N_CHANNELS, hardware);
   onir->screen->display(message);
-  onir->set_pinout(pinout);
   Wire.begin();
 }
 
