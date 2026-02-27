@@ -10,8 +10,7 @@
 class Screen {
 
 public:
-  Screen(const Hardware& hardware = no_hardware) {
-    control = new Control(hardware)
+  Screen(const Hardware& hardware = no_hardware) : control_(new Control(hardware)) {
     clear();
   }
   
@@ -44,7 +43,7 @@ public:
     message_ = 0;
     index_ = 0;
   }
-    
+  
   void display(const char* message) {
     message_ = message;
     record();
