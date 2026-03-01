@@ -1,6 +1,4 @@
 #include "onir.h"
-#include "control.h"
-#include "screen.h"
 #include "uno_io.h"
 #include "log.h"
 
@@ -13,8 +11,8 @@ Onir* onir;
 Hardware hardware = {};
 
 IOState state;
-//const char message[64] = "ko labs -- onir --";
-const char message[64] = "1 at a time";
+const char message[64] = "ko labs -- onir --";
+//const char message[64] = "1 at a time";
 
 
 void setup() {
@@ -23,7 +21,7 @@ void setup() {
   log_winks = 25;
   uno_io(hardware);
   onir = new Onir(channels, count, hardware);
-  onir->screen->display(message);
+  onir->display(message);
   Wire.begin();
 }
 

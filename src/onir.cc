@@ -16,23 +16,21 @@ void Onir::display(char* message) {
 void Onir::act() {
   if (go()) {
     screen->pan(1);
-    if (control->local()) {
-      log_io(control->local());
-    }
+    log_io(control->local());
   }
 }
 
 void Onir::update() {
-  control->update();
+  control->check();
   act();
   screen->show();
 }
 
-int Onir::step() {
+int Onir::now() {
   return millis() / step_ms_;
 }
 
 bool Onir::go() {
-  int old_step = step_;
-  return old_step != (step_ = step());
+  int past = now_;
+  return past != (now_ = now());
 }

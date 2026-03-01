@@ -26,7 +26,7 @@ Control::Control(int* channels, int ct, const Hardware& hardware) {
   }
 }
 
-void Control::update() {
+void Control::check() {
   for (Client* client : clients) {
     if (client) {
       client->update();

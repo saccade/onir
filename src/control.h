@@ -9,7 +9,7 @@ public:
   Control(const Hardware& hardware = no_hardware);
   Control(int* channels, int count, const Hardware& hardware = no_hardware);
 
-  void update();
+  void check();
   int count() {return count_;}
   Client* local() {return clients[local_];}
 

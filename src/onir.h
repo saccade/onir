@@ -35,9 +35,9 @@ public:
   Onir(int* channels, int count, const Hardware& hardware = no_hardware);
 
   void Onir::display(char* message);
-
   void update();
-  int step();
+
+  int now();
 
   Control* control;
   Screen* screen;
@@ -47,6 +47,6 @@ private:
   void act();
   bool go();
   const int step_ms_ = 1000;
-  int step_ = -1;
+  int now_ = -1;
 };
 
