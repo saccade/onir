@@ -15,7 +15,7 @@ To get this set up right:
 1. Log on to your workstation account and make sure that you have the Arduino IDE installed, and that you can upload the ```File > Examples > Basics > Blink``` sketch. If pushing from the IDE isn't working, make sure you're in the 'dialout' login group, try a different microcontroller, then check with dr. kraemer. (He may need to reboot your workstation, or assign you to a different one for this lab.)
 
 2. Run these three commands (commands must be precise --- copy-paste or type exactly):
-   * ```mkdir Arduinuo/libraries```
+   * ```mkdir Arduino/libraries```
    * ```cd Arduino/libraries```
    * ```git clone https://github.com/dr-kraemer-everett/onir```
 
