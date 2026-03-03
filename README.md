@@ -25,7 +25,7 @@ To get this set up right:
 
 2. *Install onir:*
 
-   Run these three commands (commands must be precise --- copy-paste or type exactly):
+   Open the terminal (the black window with the green text where you can type commands to the computer). Run these three commands (commands must be precise --- copy-paste or type exactly):
     * ```mkdir Arduino/libraries```
     * ```cd Arduino/libraries```
     * ```git clone https://github.com/dr-kraemer-everett/onir```
