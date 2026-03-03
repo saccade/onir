@@ -2,7 +2,6 @@
 #include "control.h"
 #include "log.h"
 #include "screen.h"
-#include "uno_pinout.h"
 #include "uno_io.h"
 
 #include "Wire.h"
@@ -12,8 +11,6 @@ int channels[N_CHANNELS] = { 8, 9, 10, 11, 12 };
 //Onir onir(channels, N_CHANNELS);
 Onir* onir;
 Hardware hardware = {};
-
-int* pinout = set_uno_pinout(init_interface);
 
 IOState state;
 
@@ -26,7 +23,6 @@ void setup() {
   uno_io(hardware);
   onir = new Onir(channels, N_CHANNELS, hardware);
   onir->screen->display(message);
-  onir->set_pinout(pinout);
   Wire.begin();
 }
 
