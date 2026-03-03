@@ -3,29 +3,24 @@
 #include "Arduino.h"
 
 DialDevice::DialDevice(const Hardware& hardware) : hardware(hardware) {
-  init();
-}
-
-void DialDevice::init() {
-  if (not unset(hardware)) {
-    pinMode(dispatch(hardware, PinFunction::CLOCK),  INPUT_PULLUP);
-    pinMode(dispatch(hardware, PinFunction::DATA),  INPUT_PULLUP);
-    pinMode(dispatch(hardware, PinFunction::SWITCH),  INPUT_PULLUP);
+  if (not empty(hardware)) {
+    pinMode(dispatch(hardware, Function::CLOCK),  INPUT_PULLUP);
+    pinMode(dispatch(hardware, Function::DATA),   INPUT_PULLUP);
+    pinMode(dispatch(hardware, Function::SWITCH), INPUT_PULLUP);
   }
-  // assume the recent past was boring.
-  clock = true;
+  clock = true;   // assume the recent past was boring.
 }
 
 bool DialDevice::clock_pin() const {
-  return digitalRead(dispatch(hardware, PinFunction::CLOCK));
+  return digitalRead(dispatch(hardware, Function::CLOCK));
 }
 
 bool DialDevice::data_pin() const {
-  return digitalRead(dispatch(hardware, PinFunction::DATA));
+  return digitalRead(dispatch(hardware, Function::DATA));
 }
 
 bool DialDevice::switch_pressed() const {
-  return not digitalRead(dispatch(hardware, PinFunction::SWITCH));
+  return not digitalRead(dispatch(hardware, Function::SWITCH));
 }
 
 void DialDevice::read(DialState& state) {

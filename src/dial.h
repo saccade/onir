@@ -6,14 +6,17 @@ class DialDevice;
 
 class Dial {
 public:
-  Dial(const Hardware& hw = no_hardware);
-  Dial(int ch, const Hardware& hw = no_hardware);
-  Dial(Interface pinout, const Hardware& hw = no_hardware);
+  Dial(const Hardware& hardware);
+  Dial(int ch);
 
-  void attach(DialDevice* d);
+  void attach(DialDevice* device);
   
-  void set_channel(int ch) {
-    channel = ch;
+  void set_channel(int channel) {
+    channel_ = channel;
+  }
+
+  int channel() {
+    return channel_;
   }
 
   void update();
@@ -40,7 +43,7 @@ public:
   DialState state;
 
 private:
-  int channel = -1;  // -1 means unset
+  int channel_ = -1;  // -1 means unset
   int zero_offset = 0;
   int down_offset = 0;
   

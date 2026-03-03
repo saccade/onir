@@ -2,7 +2,7 @@
 
 // names for logical pin functions.
 
-enum class PinFunction {
+enum class Function {
   NONE,  // default
 
     // power pair
@@ -36,14 +36,14 @@ enum class PinFunction {
     DD_2,
     DD_3,
     DD_4,
-    END,  // preserve trailing comma (dr. kraemer is old.)
+    COUNT,  // preserve trailing comma (dr. kraemer is old.)
   
     };
 
-const int hardware_size = (int)PinFunction::END;  // TODO interface
-using Hardware = int[hardware_size];
+const int interface = (int)Function::COUNT;
+using Hardware = int[interface];
 extern const Hardware no_hardware;
 
-int assign(Hardware hardware, PinFunction fn, int pin);
-int dispatch(const Hardware& hardware, PinFunction fn);
-bool unset(const Hardware&);
+int assign(Hardware hardware, Function fn, int pin);
+int dispatch(const Hardware& hardware, Function fn);
+bool empty(const Hardware&);

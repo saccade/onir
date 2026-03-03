@@ -1,6 +1,5 @@
 #include "display.h"
 #include "display_device.h"
-#include "uno_pinout.h"
 #include "uno_io.h"
 #include "hardware.h"
 
@@ -19,7 +18,6 @@ void setup() {
   Serial.begin(9600);
   uno_io(hardware);
   device = new DisplayDevice(hardware);
-  device->set_pinout(set_uno_pinout(init_interface));
   display.attach(device);
   banner();
 }

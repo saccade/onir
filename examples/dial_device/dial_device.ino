@@ -2,11 +2,12 @@
 
 #include "onir.h"
 #include "dial_device.h"
+#include "uno_io.h"
 
-DialDevice device;
+DialDevice dial;
 DialState state;
 
-int pinout[(int)PinFunction::END];
+hardware = { };
 
 const int I2C_ADDRESS = 8;
 
@@ -19,24 +20,18 @@ void on_request() {
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("dial device start");
+  Serial.println("dial dial start");
   Serial.print("i2c address: ");
   Serial.println(I2C_ADDRESS);
-
-  pinout[(int)PinFunction::CLOCK] = 17;   // A3
-  pinout[(int)PinFunction::DATA] = 16;    // A2
-  pinout[(int)PinFunction::SWITCH] = 15;  // A1
-
-  device.set_pinout(pinout);
-  device.init();
+  uno_io(hardware);
+  dial = Dial(hardware);
 
   Wire.begin(I2C_ADDRESS);
   Wire.onRequest(on_request);
 }
 
 void loop() {
-  device.read(state);
-
+  dial.read(state);
   if (state.count != last_count || state.button != last_button) {
     Serial.print("count: ");
     Serial.print(state.count);

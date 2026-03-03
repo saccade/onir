@@ -15,7 +15,7 @@ class Display {
 public:
   Display(const Hardware& hardware = no_hardware);
   
-  Display(int ch, const Hardware& hw = no_hardware);
+  Display(int ch);
 
   void init(int channel);
 
@@ -59,7 +59,7 @@ public:
   DisplayState state;
 
 private:
-  DisplayDevice* device = nullptr;
+  DisplayDevice* device = 0;
   
   int channel = -1;  // don't call if nothing will answer. (the modem rings SYN for a minute.)
 
@@ -97,7 +97,5 @@ private:
   
   void send_update();
   void update_local();
-
-  const Hardware& hardware;
 };
 

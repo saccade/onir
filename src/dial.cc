@@ -4,18 +4,18 @@
 #include "Arduino.h"
 #include "Wire.h"
 
-Dial::Dial(const Hardware& hardware) : hardware(hardware) {
+Dial::Dial(const Hardware& hardware) {
+  device = new DialDevice(hardware);
   zero();
 }
 
-Dial::Dial(int ch, const Hardware& hardware) : hardware(hardware) {
+Dial::Dial(int ch) {
   zero();
   set_channel(ch);
 }
 
 void Dial::attach(DialDevice* d) {
   device = d;
-  device->init();
 }
 
 void Dial::update() {
@@ -23,8 +23,8 @@ void Dial::update() {
     device->read(state);
     return;
   }
-  if (channel >= MIN_CHANNEL) {
-    Wire.requestFrom(channel, (int)sizeof(DialState));
+  if (channel_ >= MIN_CHANNEL) {
+    Wire.requestFrom(channel_, (int)sizeof(DialState));
     if (Wire.available() == sizeof(DialState)) {
       Wire.readBytes((char*)&state, sizeof(DialState));
     }

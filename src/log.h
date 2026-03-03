@@ -7,7 +7,7 @@ void print_io(const IOState& s);
 
 void print_display(const DisplayState& display);
 
-class Client;
-void log_io(Client* client);
+class Unit;
+void log_io(Unit* unit);
 
 extern int log_winks;

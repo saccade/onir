@@ -25,7 +25,7 @@ void loop() {
     Serial.println("v: " + String(value));
   }
 
-  if (dial.signal()) {
+  if (dial.press()) {
     Serial.println("signal");
   }
 }

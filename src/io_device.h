@@ -22,12 +22,6 @@ class IODevice {
 public:
   IODevice(const Hardware& hardware = no_hardware);
 
-  void set_pinout(int* p) {
-    pinout = p;
-    display->set_pinout(pinout);
-//    dial->set_pinout(pinout);
-  }
-
   int reboot_channel = -1;
 
   void update() {
@@ -38,18 +32,16 @@ public:
     display->state = state.display;
     display->refresh();
 
-    // if (state.dial.button) {
-    // nope!  Selector selector(&pinout);
-    //   selector.set_button(state.dial.button);
-    //   reboot_channel = selector.get_channel();
-    // }
+    if (state.dial.button) {
+     Selector selector(hardware);
+     selector.set_button(state.dial.button);
+     reboot_channel = selector.get_channel();
+    }
   }
 
   IOState state;   // shared storage (transport reads/writes this)
 
 private:
-  int* pinout = 0;
-  
   DialDevice* dial;
   DisplayDevice* display;
 

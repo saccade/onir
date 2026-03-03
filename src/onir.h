@@ -4,12 +4,6 @@
 
 #define MIN_CHANNEL 8
 
-extern int interface_size;
-
-using Interface = int[(int)PinFunction::END];
-
-extern Interface init_interface;
-
 struct DisplayState {
   char chars[4];  // characters on display; ' ' is blank.
   int point;      // using values outside [0,3] is pointless.
@@ -38,13 +32,12 @@ class Screen;
 
 class Onir {
 public:
-  Onir(int* channels, int count, const Hardware& hw = no_hardware);
+  Onir(int* channels, int count, const Hardware& hardware = no_hardware);
 
-  void set_pinout(Interface pinout);
   void Onir::display(char* message);
-
   void update();
-  int step();
+
+  int now();
 
   Control* control;
   Screen* screen;
@@ -54,6 +47,6 @@ private:
   void act();
   bool go();
   const int step_ms_ = 1000;
-  int step_ = -1;
+  int now_ = -1;
 };
 

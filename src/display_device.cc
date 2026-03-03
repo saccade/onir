@@ -5,32 +5,25 @@
 
 DisplayDevice::DisplayDevice(const Hardware& hardware) : hardware(hardware) {
   for (int i = 0; i < 7; i++) {
-    segments[i] = (PinFunction)(i + (int)PF::DD_A);
+    segments[i] = (Function)(i + (int)Fn::DD_A);
   }
   for (int i = 0; i < 4; i++) {
-    positions[i] = (PinFunction)(i + (int)PF::DD_1);
-  }
-  for (int i = 0; i < interface_size; i++) {
-    device_pinout[i] = -1;
+    positions[i] = (Function)(i + (int)Fn::DD_1);
   }
   set_segment_masks();
   set_char_masks();
-}
-
-void DisplayDevice::set_pinout(Interface pinout) {
-  for (int i = (int)PinFunction::DD_A; i <= (int)PinFunction::DD_4; i++) {
-    device_pinout[i] = pinout[i];
-    pinMode(pinout[i], OUTPUT);
+  for (int i = (int)Function::DD_A; i <= (int)Function::DD_4; i++) {
+    pinMode(dispatch(hardware, (Function)i), OUTPUT);
   }
   clear();
 }
 
 void DisplayDevice::clear() {
-  for (PinFunction segment : segments) {
+  for (Function segment : segments) {
     pin_low(segment);
   }
   set_point_pin(LOW);
-  for (PinFunction position : positions) {
+  for (Function position : positions) {
     pin_high(position);
   }
 }
@@ -39,22 +32,20 @@ int DisplayDevice::position_to_show() {
   return (millis() % ms_per_cycle) / ms_per_digit;
 }
 
-void DisplayDevice::pin_high(PinFunction fn) {
-  set_fn_pin(fn, HIGH);
-}
-
-void DisplayDevice::pin_low(PinFunction fn) {
-  set_fn_pin(fn, LOW);
-}
-
-void DisplayDevice::set_fn_pin(PinFunction fn, bool val) {
-  //digitalWrite(device_pinout[(int)fn], val);
+void DisplayDevice::set_fn_pin(Function fn, bool val) {
   digitalWrite(dispatch(hardware, fn), val);
 }
 
+void DisplayDevice::pin_high(Function fn) {
+  set_fn_pin(fn, HIGH);
+}
+
+void DisplayDevice::pin_low(Function fn) {
+  set_fn_pin(fn, LOW);
+}
+
 void DisplayDevice::set_point_pin(bool val) {
-//  digitalWrite(device_pinout[(int)PF::DD_P], val);
-  set_fn_pin(PF::DD_P, val);
+  set_fn_pin(Fn::DD_P, val);
 }
 
 void DisplayDevice::refresh() {
@@ -62,7 +53,7 @@ void DisplayDevice::refresh() {
   if (position != position_showing) {  // redraw display
     position_showing = position;
     clear();
-    for (PinFunction segment : segments) {
+    for (Function segment : segments) {
       if (segment_masks[(int)segment] & char_masks[(int)state.chars[position]]) {
         pin_high(segment);
       }

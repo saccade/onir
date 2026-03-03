@@ -2,23 +2,26 @@
 
 #include "Arduino.h"
 
-Selector::Selector(int (*p)[(int)PinFunction::END], const Hardware& hardware) : hardware(hardware) {
-  button_down = false;
-  pinout = p;
+int selected_channel = min_channel;
+  const int min_channel = 0x08;        // = 8 -- https://i2cdevices.org/addresses
+  const int max_channel = 0x77;        // 0x77 = 119
+  // note: 192 - 8 = 184 = 8x23 => 32x23 char 'display'
+
+
+Selector::Selector(bool button, const Hardware& hardware) :
+  hardware(hardware), button_down(button) {
+  dial = new Dial(hardware);
+  display = new Display(hardware);
 }
 
-
-Selector::Selector(Dial* d, Display* s, bool button=false, const Hardware& hardware)
-  : hardware(hardware) {
-    dial = d;
-    display = s;
-    channel = MIN_CHANNEL;
-    button_down=button;
-  }
+Selector::Selector(Dial* dial, Display* display, bool button, const Hardware& hardware)
+  : dial(dial), display(display), button_down(button), hardware(hardware) {
+  button_down = false;
+}
 
 void Selector::channel_up() {
-  if (channel < max_channel) {
-    channel++;
+  if (selected_channel < max_channel) {
+    selected_channel++;
   } else {
     Serial.print("max channel = ");
     echo();
@@ -26,8 +29,8 @@ void Selector::channel_up() {
 }
 
 void Selector::channel_down() {
-  if (channel > min_channel)  {
-    channel--;
+  if (selected_channel > min_channel)  {
+    selected_channel--;
   } else {
     Serial.println();
     Serial.print("min channel = ");
@@ -44,17 +47,12 @@ char Selector::hex_digit(int value) {
 void Selector::display_channel() {
   display->put_char(0, '0');
   display->put_char(1, 'x');
-  display->put_char(2, hex_digit(channel / 16));
-  display->put_char(3, hex_digit(channel % 16));
+  display->put_char(2, hex_digit(selected_channel / 16));
+  display->put_char(3, hex_digit(selected_channel % 16));
 }
-
 
 int Selector::get_channel() {
   Serial.print("channel: ");
-  Dial local_dial(pinout, hardware);;
-  // TODO: breaks non-local selector dial. fix after interface/pinout is gone.
-//    local_dial = Dial(pinout, hardware);
-//  }
   display_channel();
   long value = dial->value();
   dial->update();
@@ -78,26 +76,17 @@ int Selector::get_channel() {
   echo();
   Serial.println(".");
   Serial.print("channel ");
-  Serial.println(channel);
+  Serial.println(selected_channel);
   dial->zero();
-  return channel;  
+  return selected_channel;  
 }
 
 int Selector::count() {
-  if (button_down) {
-    Serial.println(button_down);
-    return dial->down_value();
-  } else {
-    return dial->value();
-  }
+  return dial->value() + dial->down_value();
 }
 
 bool Selector::done() {
-  if (button_down) {
-    return dial->release();
-  } else {
-    return dial->press();
-  }
+  return dial->release();
 }
 
 void Selector::echo() {

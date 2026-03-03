@@ -2,6 +2,6 @@
 
 #include "hardware.h"
 
-using PF = PinFunction;
+using Fn = Function;
 
 void uno_io(Hardware hardware);

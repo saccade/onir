@@ -4,7 +4,6 @@
 
 #include "io_device.h"
 #include "hardware.h"
-#include "uno_pinout.h"
 #include "uno_io.h"
 #include "selector.h"
 #include "log.h"
@@ -13,7 +12,6 @@ DisplayDevice* device;
 Display* display;
 Hardware hardware = {};
 
-int* pinout = set_uno_pinout(init_interface);
 IODevice* io;
 
 int channel;
@@ -43,23 +41,14 @@ void setup() {
   log_winks = 10;  // I need a second.
   Serial.println("starting io device");
   uno_io(hardware);
-  Dial dial;
-  DialDevice dial_device(hardware);
-  dial.attach(&dial_device);
-  display = new Display(hardware);
-
-  device = new DisplayDevice(hardware);
-  device->set_pinout(pinout);
-  display = new Display;
-  display->attach(device);
-  display->set_point(-1);
-
-  channel = Selector(&dial, display, false, hardware).get_channel();
+  Dial dial(hardware);
+  Display display(hardware);
+  display.set_point(-1);
+  channel = Selector(&dial, &display, false, hardware).get_channel();
   Serial.print("selected: ");
   Serial.println(channel);
 
   io = new IODevice(hardware);
-  io->set_pinout(pinout);
   start_channel();
 }
 
