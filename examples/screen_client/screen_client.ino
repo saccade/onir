@@ -1,4 +1,7 @@
 #include "onir.h"
+#include "control.h"
+#include "log.h"
+#include "screen.h"
 #include "uno_io.h"
 #include "log.h"
 
