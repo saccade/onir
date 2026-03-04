@@ -49,7 +49,7 @@ void DisplayDevice::set_point_pin(bool val) {
 }
 
 void DisplayDevice::refresh() {
-  int prior_position = position_showing;
+  int prior_position = position;
   if (prior_position != (position = position_to_show())) {  // redraw display
     clear();
     for (Function segment : segments) {

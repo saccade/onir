@@ -37,7 +37,7 @@ private:
   }
 
   void set_segment_masks() {
-    for (int i = 0; i < Fn::COUNT; i++) {
+    for (int i = 0; i < (int)Fn::COUNT; i++) {
       segment_masks[i] = 0;
     }
     for (int i = (int)Fn::DD_A; i <= (int)Fn::DD_G; i++) {
@@ -115,7 +115,7 @@ private:
 
   const int ms_per_digit = 1;
   const int ms_per_cycle = 4 * ms_per_digit;
-  int position_showing = -1;
+  int position = -1;
   long refresh_ms = -1;
 
   int position_to_show();
