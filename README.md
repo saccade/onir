@@ -25,18 +25,22 @@ To get this set up right:
 
 2. *Install onir:*
 
-   Open the terminal (the black window with the green text where you can type commands to the computer). Run these three commands (commands must be precise --- copy-paste or type exactly):
+   Open the terminal (the black window with the green text where you can type commands to the computer). Run these three commands (commands must be precise --- *copy-paste* or type **exactly**):
     * ```mkdir Arduino/libraries```
     * ```cd Arduino/libraries```
     * ```git clone https://github.com/dr-kraemer-everett/onir```
 
 3. *Update onir:*
 
-   Run the command ```git pull```. This will pull down any updates into to your copy of onir.
+   If you didn't *just* perform the git clone, enter the command ```git pull```. This will pull down any updates from me or your classmates into to your copy of onir.
 
 4. *Run onir:*
 
-   Restart the IDE. At the *very bottom* of ```File > Examples``` you should see the option ```onir_device_interface```. If it's not present, check your install setup -- you probably have onir in the wrong place. You can remove it with the command ```rm -r onir``` (be careful with the command ```rm -r`` though! it doesn't ask twice, and can do a lot of damage in the wrong situation!.)
+   Restart the IDE. At the *very bottom* of ```File > Examples``` you should see the option ```onir_device_interface```.
+
+#### onir not there?
+
+If you don't see ```onir_device_interface``` at the bottom of ```Examples```, check your install setup -- you probably have onir in the wrong place. You can remove it with the command ```rm -r onir``` (be careful with the command ```rm -r`` though! it doesn't ask twice, and can do a lot of damage in the wrong situation!.)
 
 ## set up hardware
 
@@ -48,6 +52,19 @@ You'll need a pair of boards with ko lab's basic IO setup. (Example board setups
 ### cable fabrication
 
 If you haven't yet fabricated any cables for one of these devices, it's time to do that! You'll find the supplies to make these cables at the front of the lab.
+
+#### cable harness
+
+If everyone in your group has already made a cable, that's great! You're not brand new at this, so now put together a **four box harness** for your group. These should **match** the color patterns you see around the lab. You know I don't want to shut down your creative ideas, but on this, ask before innnovating.
+
+Materials:
+	* four 5-pin headers
+	* two 4-pin headers
+	* two groups of 5 M/F wires for the dial. (match colors with existing hardware!)
+	* one double-pair for I2C (again, match the colors you see.)
+
+One nice thing about the harness is that it holds everything together.
+	. 
 
 ## run sketches
 
