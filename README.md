@@ -44,32 +44,35 @@ If you don't see ```onir_device_interface``` at the bottom of ```Examples```, ch
 
 ## set up hardware
 
-You'll need a pair of boards with ko lab's basic IO setup. (Example board setups are on display.) The Uno IO setup has:
-   * a display attached to pins 2 through 14 via two ribbon cables
-   * a dial attached to pins A1-A3 + 5V/GND
-   * an I2C pairing cable attached to the GND/VIN pair and the A4/A5 pair.
+You'll need a pair of boards with ko lab's basic IO setup. (Example board setups are on display.) 
 
 ### cable fabrication
 
 If you haven't yet fabricated any cables for one of these devices, it's time to do that! You'll find the supplies to make these cables at the front of the lab.
 
-#### cable harness
+### cable harness
 
 If everyone in your group has already made a cable, that's great! You're not brand new at this, so now put together a **four box harness** for your group. These should **match** the color patterns you see around the lab. You know I don't want to shut down your creative ideas, but on this, ask before innnovating.
 
-Materials:
-	* four 5-pin housings (Dupont connector header)
-	* two 4-pin housings
-	* two groups of 5 M/F wires for the dial. (match colors with existing lab hardware!)
-	* one double-pair for I2C (again, match the color patterns you see around you.)
+*Materials:*
+
+  * four 5-pin housings (Dupont connector header)
+  * two 4-pin housings
+  * two groups of 5 M/F wires for the dial. (match colors with existing lab hardware!)
+  * one double-pair for I2C (again, match the color patterns you see around you.)
 
 By now you know from experience that adding **housings** to cables lets you make a one-time-job of the fiddly work of getting dozens of single cable ends placed just right. A **cable harness** levels up this idea of one-time cable placement. Instead of making a generic ribbon cable (like the display cables) or a function-splitter (like the dial cable and the I2C connector) to a piece of *dedicated hardware* for one particular circuit — in this case, the lab's standard Uno input/output (or, *I/O*) circuit.
 
-You've used this setup before. The
+You've used this I/O setup repeatedly now:
+   * **display** (4-digit, 7-segment): attached to pins 2 through 14 via two flat ribbon cables
+   * **dial**: attached to pins A1-A3 + 5V/GND
+   * **I2C**: pairing cable attached to the GND/VIN pair and the A4/A5 pair on *two Uno boards*
 
+The key idea is to use the housings to organize the cables into the *same positions* they would be without the harness, but with easier setup and fewer opportunities to get the setup wrong.
 
+[cable harness close-up](/resources/io-harness.png "cable harness close-up")
 
-
+   
 ## run sketches
 
 Your goal is to run the sketches under ```onir_device_interface``` and show dr. kraemer your working demos. When you get a demo working, briefly record what you see in your lab notebook.
@@ -100,6 +103,8 @@ This sketch only requires one Uno board, one seven-segment display, and two 6-pi
 This demo requires *two* Uno boards, plus the 4-pin M/M breadboard cable needed to make an I2C bridge between the boards.  Run dial_device on one board, and dial_client on the other. Attach the serial monitor to the ```dial_client``` board, then turn the dial on the ```dial_device``` board. If you see scrolling numbers, you have succeeded!
 
 Try to make the display do something different when the numbers scroll past. Then show dr. kraemer your work.
+
+### ```io_device``` and ```screen_client```:
 
 
 
