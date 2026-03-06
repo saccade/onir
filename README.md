@@ -1,14 +1,14 @@
 # onir
 
-onir: manage dials, switches, and servos over I2C (uses Arduino's Wire library)
+onir: manage dials, switches, and servos over I2C. (uses Arduino's Wire library)
 
 # lab: dials & displays
 
 * First: Write the *name of your lab partner* in your notebook.
 
-In this lab, you and your parner have the goal of setting up a message to scroll across multiple screens, with multiple dials controlling it. You'll work up to this goal by running simpler scripts that will read a single local dial, drive a single local display, and run and combine these devices over a two-device network.
+In this lab, you and your partner have the goal of setting up a message to scroll across multiple screens, with multiple dials controlling it. You'll work up to this goal by running simpler scripts that will read a single local dial, drive a single local display, and run and combine these devices over a two-device network.
 
-This is a practical get-it-done lab. Your goal is to get the setup working, so if you want, you **may use** AI to help you with this assignment. 
+This is a practical get-it-done lab. Your goal is to get the setup working, so if you want, you may use AI to help you with this assignment. 
 
 ## install the library
 
@@ -42,19 +42,19 @@ To get this set up right:
 
 #### onir not there?
 
-If you don't see ```onir_device_interface``` at the bottom of ```Examples```, check your install setup -- you probably have onir in the wrong place. You can remove it with the command ```rm -r onir``` (be careful with the command ```rm -r`` though! it doesn't ask twice, and can do a lot of damage in the wrong situation!.)
+If you don't see ```onir_device_interface``` at the bottom of ```Examples```, check your install setup -- you probably have onir in the wrong place. You can remove it with the command ```rm -r onir``` (be careful with the command ```rm -r``` though! it doesn't ask twice, and can do a lot of damage in the wrong situation!)
 
 ## set up hardware
 
-You'll need a pair of boards with ko lab's basic IO setup. (Example board setups are on display.) 
+You'll need a pair of boards with ko lab's basic IO setup.
 
 ### cable fabrication
 
-If you haven't yet fabricated any cables for one of these devices, it's time to do that! You'll find the supplies to make these cables at the front of the lab.
+If you somehow haven't yet fabricated any cables for one of these devices, it's time to do that! You'll find the supplies to make these cables at the front of the lab.
 
 ### cable harness
 
-If everyone in your group has already made a cable, that's great! You're not brand new at this, so now put together a **four box harness** for your group. These should **match** the color patterns you see around the lab. You know I don't want to shut down your creative ideas, but on this, ask before innnovating.
+If everyone in your group has already made a cable, that's great! You're not brand new at this, so now put together a **four box harness** for your group. These should match the *wire color patterns* you see widely in use around the lab. You know I don't want to shut down your creative ideas, but on this, ask before innnovating.
 
 *Materials:*
 
@@ -63,12 +63,13 @@ If everyone in your group has already made a cable, that's great! You're not bra
   * two groups of 5 M/F wires for the dial. (match colors with existing lab hardware!)
   * one double-pair for I2C (again, match the color patterns you see around you.)
 
-By now you know from experience that adding **housings** to cables lets you make a one-time-job of the fiddly work of getting dozens of single cable ends placed just right. A **cable harness** levels up this idea of one-time cable placement. Instead of making a generic ribbon cable (like the display cables) or a function-splitter (like the dial cable and the I2C connector) to a piece of *dedicated hardware* for one particular circuit — in this case, the lab's standard Uno input/output (or, *I/O*) circuit.
+By now you know from experience that adding **housings** to cables lets you make a one-time-job of the fiddly work of getting dozens of single cable ends placed just right. A **cable harness** levels up this idea of one-time cable placement. Instead of making a generic ribbon cable (like the display cables) or a function-splitter (like the dial cable and the I2C connector), the harness is a piece of *dedicated hardware* for one particular circuit — in this case, the lab's standard Uno input/output (or, *I/O*) circuit.
 
 You've used this I/O setup repeatedly now:
-   * **display** (4-digit, 7-segment): attached to pins 2 through 14 via two flat ribbon cables
-   * **dial**: attached to pins A1-A3 + 5V/GND
-   * **I2C**: pairing cable attached to the GND/VIN pair and the A4/A5 pair on *two Uno boards*
+
+   * **display** (4-digit, 7-segment): attached to pins 2 through 14 via two flat M/F ribbon cables
+   * **dial**: attached to pins A1-A3 + 5V/GND via a split M/F ribbon cable
+   * **I2C**: pairing cable bus connecting the GND/VIN pair and A4/A5 pair between *two Uno boards*
 
 The key idea is to use the housings to organize the cables into the *same positions* they would be without the harness, but with easier setup and fewer opportunities to get the setup wrong. There are three types of 'box' in this harness:
 
@@ -94,7 +95,9 @@ The key idea is to use the housings to organize the cables into the *same positi
 
 <img src="resources/io-harness.png" width="50%">
 
-Draw this harness in your notebook, being sure to highlight the single crossed pair going into the 5V/GND junction, and get dr. kraemer's signature.
+When installing the harness, please be careful **not** to flip the power box. This would connect the 5V on one board to the VIN of the other (a potentially large short, since the Uno will gamely accept all kinds of terrible current sources), as well as hooking the VIN on the first board to the + signal pin on the dial -- again likely to be more than the poor device is made to handle.
+
+Draw the four-box harness in your notebook, being sure to highlight the single crossed pair going into the 5V/GND junction, and get dr. kraemer's signature.
 
 ## run sketches
 
@@ -118,22 +121,23 @@ Push (upload) the dial_local sketch to the board, and turn the dial. If you see 
 
 ### ```display_local.ino```:
 
-This sketch only requires one Uno board, one seven-segment display, and two 6-pin M/F breadboard cables. Attach them using the demo, and push the sketch ```display_local``` to the board. It should show the message "onir". Change the message to something else, then show dr. kraemer.
+This sketch only uses one Uno board, one seven-segment display, and two 6-pin M/F ribbon cables. Make sure both the board and the display are in a letters-up condition. (For the display, this actually means orienting the decimal points at the bottom.) The bottom row of pins on the display connects to pins 13-8, and the top row to pins 7-2.
 
+With the display attached, push the sketch ```display_local``` to the board. It should show the message "onir". Change the message to something else, then show dr. kraemer.
 
 ### ```dial_device``` and ```dial_client```:
 
-This demo requires *two* Uno boards, plus the 4-pin M/M breadboard cable needed to make an I2C bridge between the boards.  Run ```dial_device``` on one board, and ```dial_client``` on the other. Attach the serial monitor to the ```dial_client``` board, then turn the dial on the ```dial_device``` board. If you see scrolling numbers, you have succeeded!
+This demo requires *two* Uno boards, plus the 4-pin M/M breadboard cable needed to make an I2C bridge between the boards.  Run ```dial_device``` on one board, and ```dial_client``` on the other. Attach the Serial Monitor tool to the ```dial_client``` board. Then turn the dial on the ```dial_device``` board -- if you see scrolling numbers, you have succeeded!
 
 Try to make the display *show something different* when you turn the dial. Then show dr. kraemer your work.
 
 ### ```io_device``` and ```screen_client```:
 
-This demo uses another 2-Uno circuit over an I2C cable, but with: (1) a second *dial* attached to the *client* board, and (2) a **display** attached to the **device** board. Push the sketch ```io_device``` to the board with a dial and display, and ```screen_client``` to the board with just a dial.
+This demo uses another 2-Uno circuit over an I2C cable, but with: (1) a second *dial* attached to the *client* board, and (2) a **display** attached to the **device** board. Push the sketch ```io_device``` to the board with the dial and display, and ```screen_client``` to the board with just a dial.
 
-The ```io_device``` sketch starts up in a channel-selector mode that initially displays an enigmatic "0x08". This is not nonsense or an error, but rather the standard format for displaying an I2C channel. The channel can be anything from 0x08 (channel 8, the lowest available channel) to 0x77 (channel 119, the highest available).
+The ```io_device``` sketch starts up in a channel-selector mode which initially displays an enigmatic "0x08". This is not nonsense or an error, but rather the standard format for displaying an I2C channel. The channel can be anything from 0x08 (channel 8, the lowest available channel) to 0x77 (channel 119, the highest available).
 
-Press the switch once to start the device on channel 8. If you have all the cables attached correctly, you should see your message scrolling on the display. Check that both dials are able to scroll the display. At the software level this is very similar to being able to use two dials to control a pair of servomotors on a car.
+Press the switch once to start the device on channel 8. If you have all the cables attached correctly, you should see your message scrolling on the display. Check that both dials are able to scroll the display. (At the software level this is very similar to being able to use two dials to control a pair of servomotors on an arm or a car.)
 
 If your display scrolls, change the banner message from "ko labs -- onir --" to something that makes sense to you. Then show dr. kraemer your work.
 
@@ -141,7 +145,7 @@ If your display scrolls, change the banner message from "ko labs -- onir --" to 
 
 If you've gotten the two-device setup working, try for three! Get a breadboad and use it to bus together the VIN/GND power pairs and the A4/A5 data pairs from a trio of Uno boards. Set up two of the boards as ```io_device```s on channels ```0x08``` and ```0x09```, and the third as a ```screen_client```.
 
-You won't be able to use the harness you made to do this -- you'll have to use three indifvidual I2C connector cables to hook each board up to the breadboard. It's easy to get a pair of these wires flipped and end up with a short circuit instead of a display device. If you connect VIN to GND you'll probably let the "magic smoke" out of the equipment. So get another student to check your connections before you power up your circuit!
+You won't be able to use the harness you made to do this -- you'll have to use three individual I2C connector cables to hook each Uno up to the breadboard. It's easy to get a pair of these wires flipped and end up with a short circuit instead of a display device. If you connect VIN to GND you'll probably let the "magic smoke" out of our equipment. So get another student to check your connections before you power up your circuit!
 
 If everything is connected right, you should be able to (1) scroll your banner message on each device's display using that device's dial, and (2) scroll the message on *both* displays using the dial on the *client* board.
 
@@ -150,7 +154,6 @@ Multi-device I2C setups are notoriously finicky -- if you got this working, good
 # license
 
 The name 'onir' may sound dreamy, but it's also short for "oh, nothing I'd recommend." I hope this software will be ready to use outside my lab someday. But for now I wouldn't advise putting this near your hardware.
-
 
 # developer updates
 
