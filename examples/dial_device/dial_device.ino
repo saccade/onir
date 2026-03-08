@@ -4,15 +4,16 @@
 #include "dial_device.h"
 #include "uno_io.h"
 
-DialDevice dial;
+DialDevice* dial;
 DialState state;
 
-hardware = { };
+Hardware hardware = {};
 
 const int I2C_ADDRESS = 8;
 
-long last_count = 0;
-bool last_button = false;
+long count = 0;
+long down_count = 0;
+bool button = false;
 
 void on_request() {
   Wire.write((byte*)&state, sizeof(DialState));
@@ -20,25 +21,29 @@ void on_request() {
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("dial dial start");
+  Serial.println("dial start");
+
+  uno_io(hardware);
+  dial = new DialDevice(hardware);
+
   Serial.print("i2c address: ");
   Serial.println(I2C_ADDRESS);
-  uno_io(hardware);
-  dial = Dial(hardware);
 
   Wire.begin(I2C_ADDRESS);
   Wire.onRequest(on_request);
 }
 
 void loop() {
-  dial.read(state);
-  if (state.count != last_count || state.button != last_button) {
-    Serial.print("count: ");
-    Serial.print(state.count);
-    Serial.print("  button: ");
-    Serial.println(state.button);
+  dial->read(state);
+  if (state.count != count || state.down_count != down_count || state.button != button) {
+    Serial.print("c: ");
+    Serial.print(count = state.count);
+    Serial.print(" d: ");
+    Serial.print(down_count = state.down_count);
+    Serial.print(" b: ");
+    Serial.println(button = state.button = state.button);
 
-    last_count = state.count;
-    last_button = state.button;
+    ;
+    ;
   }
 }

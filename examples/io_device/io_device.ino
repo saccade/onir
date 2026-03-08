@@ -52,7 +52,6 @@ void setup() {
   start_channel();
 }
 
-
 void loop() {
   io->update();
   log(io->buffer);

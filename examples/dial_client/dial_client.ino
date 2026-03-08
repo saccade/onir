@@ -3,7 +3,7 @@
 #include "onir.h"
 #include "dial.h"
 
-Dial dial;
+Dial* dial;
 
 const int I2C_ADDRESS = 8;
 
@@ -12,20 +12,28 @@ void setup() {
   Serial.println("dial client " + String(I2C_ADDRESS));
 
   Wire.begin();  // client mode
-  dial.set_channel(I2C_ADDRESS);
+  dial = new Dial(I2C_ADDRESS);
 }
 
 void loop() {
 
-  long last_value = dial.value();
-  dial.update();
-  long value = dial.value();
+  long last_value = dial->value();
+  long last_down_value = dial->down_value();
+  dial->update();
 
-  if (value != last_value) {
-    Serial.println("v: " + String(value));
+  if (dial->value() != last_value) {
+    Serial.println("v: " + String(dial->value()));
   }
 
-  if (dial.press()) {
-    Serial.println("signal");
+  if (dial->down_value() != last_down_value) {
+    Serial.println("dv: " + String(dial->down_value()));
+  }
+
+  if (dial->press()) {
+    Serial.println("press");
+  }
+
+  if (dial->release()) {
+    Serial.println("release");
   }
 }

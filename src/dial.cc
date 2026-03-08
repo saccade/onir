@@ -9,9 +9,9 @@ Dial::Dial(const Hardware& hardware) {
   zero();
 }
 
-Dial::Dial(int ch) {
+Dial::Dial(int channel) {
   zero();
-  set_channel(ch);
+  set_channel(channel);
 }
 
 void Dial::attach(DialDevice* d) {

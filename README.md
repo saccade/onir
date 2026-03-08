@@ -63,7 +63,7 @@ If everyone in your group has already made a cable, that's great! You're not bra
   * two groups of 5 M/F wires for the dial. (match colors with existing lab hardware!)
   * one double-pair for I2C (again, match the color patterns you see around you.)
 
-By now you know from experience that adding **housings** to cables lets you make a one-time-job of the fiddly work of getting dozens of single cable ends placed just right. A **cable harness** levels up this idea of one-time cable placement. Instead of making a generic ribbon cable (like the display cables) or a function-splitter (like the dial cable and the I2C connector), the harness is a piece of *dedicated hardware* for one particular circuit — in this case, the lab's standard Uno input/output (or, *I/O*) circuit.
+By now you know from experience that adding **housings** to cables lets you make a one time job of the fiddly work of getting dozens of single cable ends placed just right. A **cable harness** levels up this idea of single-shot cable placement. Instead of making a generic ribbon cable (like the display cables) or a function-splitter (like the dial cable and the I2C connector), the harness is a piece of *dedicated hardware* for one particular circuit — in this case, the lab's standard Uno input/output (or, *I/O*) circuit.
 
 You've used this I/O setup repeatedly now:
 

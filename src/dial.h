@@ -7,7 +7,7 @@ class DialDevice;
 class Dial {
 public:
   Dial(const Hardware& hardware);
-  Dial(int ch);
+  Dial(int channel);
 
   void attach(DialDevice* device);
   
