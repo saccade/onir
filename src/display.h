@@ -35,19 +35,19 @@ public:
     state.point = -1;
   }
 
-  void put_char(int place, char ch) {
+  void put(char ch, int place) {
     state.chars[place] = ch;
   }
 
   void put_str(const char* str) {  // beyond 4 dropped
     for (int i = 0; i < 4; i++) {
-      put_char(i, str[i]);
+      put(str[i], i);
     }
   }
   
   void clear() {
     for (int i = 0; i < 4; i++) {
-      put_char(i, ' ');
+      put(' ', i);
     }
     clear_point();
   }
@@ -69,12 +69,12 @@ private:
 
   void set_digits(int nnn) {
     for (int i = 0; i < 4; i++) {
-      put_char(i, 0);  // 0 gives a blank display
+      put(0, i);  // 0 gives a blank display
     }
     if ((nnn == 0) && !DISPLAY_SHOW_ZERO) return;
     int sign = nnn ? nnn / absv(nnn) : 0;
     if (sign < 0) {
-      put_char(0, (int)('-'));
+      put('-', 0);
     }
     int value = absv(nnn);
     // assign value's lowest three place values to the display's digits.
@@ -84,7 +84,7 @@ private:
       for (int j = 0; j < 4 - k - 1; j++) {
         modulus *= 10;
       }
-      put_char(k, '0' + (value / modulus) % 10);
+      put('0' + (value / modulus) % 10, k);
       if (!(value / (modulus * 10))) return;
     }
   }

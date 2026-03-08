@@ -45,10 +45,10 @@ char Selector::hex_digit(int value) {
 }
 
 void Selector::display_channel() {
-  display->put_char(0, '0');
-  display->put_char(1, 'x');
-  display->put_char(2, hex_digit(selected_channel / 16));
-  display->put_char(3, hex_digit(selected_channel % 16));
+  display->put('0'                             , 0);
+  display->put('x'                             , 1);
+  display->put(hex_digit(selected_channel / 16), 2);
+  display->put(hex_digit(selected_channel % 16), 3);
 }
 
 int Selector::get_channel() {

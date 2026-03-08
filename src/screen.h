@@ -77,16 +77,16 @@ public:
             offset += local->dial.value();              // control offset
           }
           if (unit != local) {
-            offset += unit->dial.value();             // device offset
+            offset += unit->dial.value();               // device offset
           }
-          unit->display.put_char(spot, at(offset));
+          unit->display.put(char_at(offset), spot);
         }
       }
     }
   }
   
 private:
-  char at(int index) {
+  char char_at(int index) {
     return display_[mod(width(), index)];;
   }
   
