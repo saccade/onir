@@ -42,7 +42,7 @@ To get this set up right:
 
 #### onir not there?
 
-If you don't see ```onir_device_interface``` at the bottom of ```Examples```, check your install setup -- you probably have onir in the wrong place. You can remove it with the command ```rm -r onir``` (be careful with the command ```rm -r``` though! it doesn't ask twice, and can do a lot of damage in the wrong situation!)
+If you don't see ```onir_device_interface``` at the bottom of ```Examples```, check your install setup -- you probably have onir in the wrong place. You can remove it with the command ```rm -r onir``` (be careful with the command ```rm -r``` though! it doesn't ask twice, and can do a lot of damage in the wrong situation.)
 
 ## set up hardware
 
