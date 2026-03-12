@@ -16,20 +16,12 @@ struct Timing {
   
 };
 
-static int modulo(int modulus, int value) {
-  if (modulus <= 0) { return -1 ;}
-  int remains = value % modulus;
-  if (remains < 0) { remains += modulus; }
-  return remains;
+static int entrance(const Timing& timing) {
+  return timing.channel % timing.beats;
 }
 
 static int stick(const Timing& timing) {
-  if (timing.now < 0) return -1;
-  return modulo(timing.beats, timing.now);
-}
-
-static int entrance(const Timing& timing) {
-  return modulo(timing.beats, timing.channel);
+  return timing.now % timing.beats;
 }
 
 static bool on_beat(const Timing& timing) {
@@ -46,11 +38,11 @@ static bool unchecked(const Timing& timing) {
 }
 
 static bool up(const Timing& timing) {
-  return timing.seen > 0 and timing.seen >= timing.gone;
+  return timing.seen >= 0 and timing.seen >= timing.gone;
 }
 
 static bool down(const Timing& timing) {
-  return timing.gone > 0 and timing.gone > timing.seen;
+  return timing.gone >= 0 and timing.gone > timing.seen;
 }
 
 static bool ready(const Timing& timing) {
@@ -60,10 +52,9 @@ static bool ready(const Timing& timing) {
     return timing.now >= timing.seen + timing.update;
   } else if (down(timing)) {
     return timing.now >= timing.gone + timing.checkup;
-  } else {
-    int what = 1 / 0;
-    return false;
   }
+  
+  return false;  // we shouldn't fall through to here
 }
 
 static bool go(const Timing& timing) {
