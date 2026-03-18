@@ -42,8 +42,5 @@ void loop() {
     Serial.print(down_count = state.down_count);
     Serial.print(" b: ");
     Serial.println(button = state.button = state.button);
-
-    ;
-    ;
   }
 }

@@ -1,62 +1,83 @@
-struct Timing {
+struct Order {
+  int channel = -1;
+  char* buffer = 0;
+  int to_read = 0;
+  int to_write = 0;
+};
+
+struct Rhythm {
   // present
   long now = -1;
 
   // past
-  long seen = -1;
-  long gone = -1;
+  long last = -1;
+  int missed = 0;
 
   // id
   int channel = -1;
   
   // policy
-  int update = 10;    // stay on the beat
-  int checkup = 1000; // hang on a second
-  int beats = 8;
+  int beats = 8;       // eight beats a measure
+  int value = 10;      // hang in with the beat
+  int bars = 3;        // give them a few tries
+  int layoff = 1000;   // hold up just a second
   
 };
 
-static int entrance(const Timing& timing) {
-  return timing.channel % timing.beats;
+static int entrance(const Rhythm& rhythm) {
+  return rhythm.channel % rhythm.beats;  // sign-preserving modulo
 }
 
-static int stick(const Timing& timing) {
-  return timing.now % timing.beats;
+static int stick(const Rhythm& rhythm) {
+  return rhythm.now % rhythm.beats;
 }
 
-static bool on_beat(const Timing& timing) {
-  int beat = stick(timing);
-  if (beat < 0) {
-    // if you don't tell me what time it is, I won't tell you to go.
+static bool on_beat(const Rhythm& rhythm) {
+  int beat = stick(rhythm);
+  if (beat < 0) { // I can't tell you to go if you don't give me the time.
     return false;
   }
-  return entrance(timing) == beat;
+  return entrance(rhythm) == beat;
 }
 
-static bool unchecked(const Timing& timing) {
-  return timing.seen < 0 and timing.gone < 0;
+static bool fresh(const Rhythm& rhythm) {
+  return rhythm.last < 0;
 }
 
-static bool up(const Timing& timing) {
-  return timing.seen >= 0 and timing.seen >= timing.gone;
+static bool up(const Rhythm& rhythm) {
+  return rhythm.missed > rhythm.bars;
 }
 
-static bool down(const Timing& timing) {
-  return timing.gone >= 0 and timing.gone > timing.seen;
-}
-
-static bool ready(const Timing& timing) {
-  if (unchecked(timing)) {
+static bool cue(const Rhythm& rhythm) {
+  if (fresh(rhythm)) {
     return true;
-  } else if (up(timing)) {
-    return timing.now >= timing.seen + timing.update;
-  } else if (down(timing)) {
-    return timing.now >= timing.gone + timing.checkup;
-  }
-  
-  return false;  // we shouldn't fall through to here
+  } else if (up(rhythm)) {
+    return rhythm.now >= rhythm.last + rhythm.value;
+  } 
+  return rhythm.now >= rhythm.last + rhythm.layoff;
 }
 
-static bool go(const Timing& timing) {
-  return ready(timing) and on_beat(timing);
+static bool go(const Rhythm& rhythm) {
+  return cue(rhythm) and on_beat(rhythm);
+}
+
+void keep(Rhythm& rhythm);
+
+using Execute = int (*)(Order& order);
+
+static int follow(Rhythm& rhythm, Execute execute, Order& order) {
+  keep(rhythm);
+  if (go(rhythm)) {
+    rhythm.last = rhythm.now;
+    
+    int result = execute(order);
+    if (result > 0) {
+      rhythm.missed = 0;
+    } else {
+      rhythm.missed++;
+    }
+    
+    return result;
+  }
+  return 0;
 }

@@ -2,11 +2,10 @@
 
 #include "Arduino.h"
 
-int selected_channel = min_channel;
-  const int min_channel = 0x08;        // = 8 -- https://i2cdevices.org/addresses
-  const int max_channel = 0x77;        // 0x77 = 119
-  // note: 192 - 8 = 184 = 8x23 => 32x23 char 'display'
+const int min_channel = 0x08;        // = 8 -- https://i2cdevices.org/addresses
+const int max_channel = 0x77;        // 0x77 = 119
 
+int selected_channel = min_channel;
 
 Selector::Selector(bool button, const Hardware& hardware) :
   hardware(hardware), button_down(button) {
@@ -45,10 +44,13 @@ char Selector::hex_digit(int value) {
 }
 
 void Selector::display_channel() {
-  display->put('0'                             , 0);
-  display->put('x'                             , 1);
-  display->put(hex_digit(selected_channel / 16), 2);
-  display->put(hex_digit(selected_channel % 16), 3);
+  char hx1 = hex_digit(selected_channel / 16);
+  char hx2 = hex_digit(selected_channel % 16);
+
+  display->put('0', 0);
+  display->put('x', 1);
+  display->put(hx1, 2);
+  display->put(hx2, 3);
 }
 
 int Selector::get_channel() {
