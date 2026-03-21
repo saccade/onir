@@ -23,26 +23,26 @@ bool DialDevice::switch_pressed() const {
   return not digitalRead(dispatch(hardware, Function::SWITCH));
 }
 
-void DialDevice::read(DialState& state) {
+void DialDevice::read(Reading& reading) {
   bool old_clock = clock;
   clock = clock_pin();
   if (clock != old_clock) {
     if (clock) {  // rising edge only
       if (data_pin()) {
         if (switch_pressed()) {
-          state.down_count--;
+          reading.down_count--;
         } else {
-          state.count--;
+          reading.count--;
         }
       } else {
         if (switch_pressed()) {
-          state.down_count++;
+          reading.down_count++;
         } else {
-          state.count++;
+          reading.count++;
         }
       }
     }
   }
 
-  state.button = switch_pressed();
+  reading.button = switch_pressed();
 }

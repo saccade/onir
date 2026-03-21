@@ -26,25 +26,25 @@ public:
   bool release();
 
   int value() const {
-    return state.count - zero_offset;
+    return reading.count - zero_offset;
   }
   
   int down_value() const {
-    return state.down_count - down_offset;
+    return reading.down_count - down_offset;
   }
 
   bool button() const {
-    return state.button;
+    return reading.button;
   }
 
   void zero() {
-    zero_offset = state.count;
-    down_offset = state.down_count;
-    change.buffer = (char*)&state;
-    change.to_read = (int)sizeof(DialState);
+    zero_offset = reading.count;
+    down_offset = reading.down_count;
+    change.buffer = (char*)&reading;
+    change.to_read = (int)sizeof(Reading);
   }
 
-  DialState state;
+  Reading reading;
 
 private:
   int call();

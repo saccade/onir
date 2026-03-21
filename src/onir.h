@@ -16,7 +16,7 @@ struct ServoState {
   int servo_r = 1500;
 };
  
-struct DialState {
+struct Reading {
   long count = 0;
   long down_count = 0;
   bool button = false;
@@ -25,7 +25,7 @@ struct DialState {
 struct IOState {
   int channel = -1;
   DisplayState display;
-  DialState dial;
+  Reading dial;
   ServoState servo;
 };
 

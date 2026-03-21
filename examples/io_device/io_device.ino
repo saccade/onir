@@ -26,7 +26,7 @@ void on_receive(int n_bytes) {
 }
 
 void on_request() {
-  Wire.write((byte*)&io->buffer.dial, sizeof(DialState));
+  Wire.write((byte*)&io->buffer.dial, sizeof(Reading));
 }
 
 void nothing() {}

@@ -5,7 +5,7 @@
 class DialDevice {
 public:
   DialDevice(const Hardware& hardware);
-  void read(DialState& state);
+  void read(Reading& reading);
 
 private:
   bool clock = true;  // this pin is HIGH by default

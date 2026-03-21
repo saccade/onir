@@ -116,7 +116,7 @@ void print_io(const IOState& state) {
 // local copy of dial and display contents (not definitive -- just read the dial!)
 void mirror_device_units(Unit* unit) {
   unit->local_.channel = unit->dial.channel();
-  memcpy(&unit->local_.dial,   &unit->dial.state,   sizeof(unit->dial.state));
+  memcpy(&unit->local_.dial,    &unit->dial.reading,  sizeof(unit->dial.reading));
   memcpy(&unit->local_.display, &unit->display.state, sizeof(unit->display.state));
 }
 

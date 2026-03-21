@@ -36,29 +36,29 @@ int Dial::call() {
 
 void Dial::update() {
   if (device) {
-    device->read(state);
+    device->read(reading);
   } else {
     follow(rhythm, call, change);
   }
 }
 
 bool Dial::press() {
-  if (press_ready and state.button) {
+  if (press_ready and reading.button) {
     press_ready = false;
     return true;
   }
-  if (not press_ready and not state.button) {
+  if (not press_ready and not reading.button) {
     press_ready = true;
   }
   return false;
 }
 
 bool Dial::release() {
-  if (release_ready and not state.button) {
+  if (release_ready and not reading.button) {
     release_ready = false;
     return true;
   }
-  if (not release_ready and state.button) {
+  if (not release_ready and reading.button) {
     release_ready = true;
   }
   return false;

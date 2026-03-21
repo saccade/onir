@@ -5,7 +5,7 @@
 #include "uno_io.h"
 
 DialDevice* dial;
-DialState state;
+Reading reading;
 
 Hardware hardware = {};
 
@@ -16,7 +16,7 @@ long down_count = 0;
 bool button = false;
 
 void on_request() {
-  Wire.write((byte*)&state, sizeof(DialState));
+  Wire.write((byte*)&reading, sizeof(Reading));
 }
 
 void setup() {
@@ -34,13 +34,13 @@ void setup() {
 }
 
 void loop() {
-  dial->read(state);
-  if (state.count != count || state.down_count != down_count || state.button != button) {
+  dial->read(reading);
+  if (reading.count != count || reading.down_count != down_count || reading.button != button) {
     Serial.print("c: ");
-    Serial.print(count = state.count);
+    Serial.print(count = reading.count);
     Serial.print(" d: ");
-    Serial.print(down_count = state.down_count);
+    Serial.print(down_count = reading.down_count);
     Serial.print(" b: ");
-    Serial.println(button = state.button = state.button);
+    Serial.println(button = reading.button = reading.button);
   }
 }

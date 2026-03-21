@@ -11,7 +11,7 @@
 //
 // device:
 //   - state.display is written by transport layer (DisplayState)
-//   - state.dial   is read    by transport layer (DialState)
+//   - state.dial   is read    by transport layer (Reading)
 //
 // loop():
 //   - refresh display from state.display
