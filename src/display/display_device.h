@@ -111,6 +111,7 @@ private:
     }
 
     char_masks[(int)'='] = sm('D') + sm('G');
+    char_masks[(int)'\''] = sm('B');
   }
 
   const int ms_per_digit = 1;

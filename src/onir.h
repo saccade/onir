@@ -9,7 +9,7 @@ struct Message {
   int point = -1;      // values outside [0,3] are pointless.
 };
 
-void blank(Message* state);
+void blank(Message* message);
 
 struct ServoState {
   int servo_l = 1500;

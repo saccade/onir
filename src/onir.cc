@@ -38,5 +38,6 @@ int Onir::now() {
 
 bool Onir::go() {
   int past = now_;
-  return past != (now_ = now());
+  now_ = now();
+  return past != now_;
 }
