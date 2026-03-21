@@ -1,6 +1,6 @@
 #include "unit.h"
 #include "log.h"
-#include "dial_device.h"
+#include "dial/dial_device.h"
 
 #include "Arduino.h"
 

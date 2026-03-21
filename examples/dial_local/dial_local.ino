@@ -1,5 +1,5 @@
 #include "dial.h"
-#include "dial_device.h"
+#include "dial/dial_device.h"
 #include "uno_io.h"
 
 Dial* dial;

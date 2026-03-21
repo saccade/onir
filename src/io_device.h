@@ -1,7 +1,7 @@
 #pragma once
 
 #include "display_device.h"
-#include "dial_device.h"
+#include "dial/dial_device.h"
 #include "selector.h"
 
 // I2C-ready device that runs a display and dial.

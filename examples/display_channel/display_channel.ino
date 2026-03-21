@@ -1,7 +1,7 @@
 #include "display.h"
 #include "display_device.h"
 #include "dial.h"
-#include "dial_device.h"
+#include "dial/dial_device.h"
 #include "uno_io.h"
 #include "selector.h"
 #include "onir.h"

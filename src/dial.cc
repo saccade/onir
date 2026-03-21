@@ -1,5 +1,5 @@
 #include "dial.h"
-#include "dial_device.h"
+#include "dial/dial_device.h"
 
 #include "Arduino.h"
 #include "Wire.h"
