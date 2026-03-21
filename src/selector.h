@@ -2,7 +2,7 @@
 
 #include "onir.h"
 
-#include "dial.h"
+#include "dial/dial.h"
 #include "display.h"
 
 extern int selected_channel;
