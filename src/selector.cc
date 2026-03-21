@@ -93,6 +93,6 @@ bool Selector::done() {
 
 void Selector::echo() {
   for (int i = 0; i < 4; i++) {
-    Serial.print(display->state.chars[i]);
+    Serial.print(display->message.chars[i]);
   }
 }

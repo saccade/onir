@@ -4,12 +4,12 @@
 
 #define MIN_CHANNEL 8
 
-struct DisplayState {
+struct Message {
   char chars[4];       // characters on display
   int point = -1;      // values outside [0,3] are pointless.
 };
 
-void blank(DisplayState* state);
+void blank(Message* state);
 
 struct ServoState {
   int servo_l = 1500;
@@ -24,7 +24,7 @@ struct Reading {
 
 struct IOState {
   int channel = -1;
-  DisplayState display;
+  Message display;
   Reading dial;
   ServoState servo;
 };

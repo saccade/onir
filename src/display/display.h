@@ -28,15 +28,15 @@ public:
   }
 
   void set_point(int place) {
-    state.point = place;
+    message.point = place;
   }
 
   void clear_point() {
-    state.point = -1;
+    message.point = -1;
   }
 
   void put(char ch, int place) {
-    state.chars[place] = ch;
+    message.chars[place] = ch;
   }
 
   void put_str(const char* str) {  // beyond 4 dropped
@@ -55,8 +55,7 @@ public:
   // call in loop()
   void refresh();
 
-  // leave this alone.
-  DisplayState state;
+  Message message;
 
 private:
   DisplayDevice* device = 0;

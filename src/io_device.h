@@ -10,7 +10,7 @@
 // This class knows nothing about Wire, addresses, or handlers.
 //
 // device:
-//   - state.display is written by transport layer (DisplayState)
+//   - state.display is written by transport layer (Message)
 //   - state.dial   is read    by transport layer (Reading)
 //
 // loop():
@@ -25,7 +25,7 @@ public:
 
   void update() {
     dial->take(buffer.dial);            // update dial buffer from hardware
-    display->state = buffer.display;    // push display buffer to hardware
+    display->message = buffer.display;  // push display buffer to hardware
     display->refresh();                 // change the lights if it's time
 
     if (buffer.dial.button) {

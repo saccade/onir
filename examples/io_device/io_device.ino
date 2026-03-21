@@ -18,9 +18,9 @@ int channel = 8;
 
 void on_receive(int n_bytes) {
   int n = n_bytes;
-  if (n > (int)sizeof(DisplayState)) {
+  if (n > (int)sizeof(Message)) {
     Serial.println("Format error!");
-    n = (int)sizeof(DisplayState);
+    n = (int)sizeof(Message);
   }
   Wire.readBytes((byte*)&io->buffer.display, n);
 }

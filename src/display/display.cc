@@ -23,15 +23,15 @@ void Display::refresh() {
     last_update = millis();
     send_update();
     if (device) {
-      device->update(state);  
+      device->update(message);  
     }
   }
 }
 
-String chars(DisplayState state) {
+String chars(Message message) {
   char result[5];
   for (int i = 0; i < 4; i++) {
-    result[i] = (char)state.chars[i];
+    result[i] = (char)message.chars[i];
   }
   result[5] = 0;
   return String(result);
@@ -41,6 +41,6 @@ String chars(DisplayState state) {
 void Display::send_update() {
   if (channel < MIN_CHANNEL) return;
   Wire.beginTransmission(channel);
-  Wire.write((const byte*) &state, (int)sizeof(DisplayState));
+  Wire.write((const byte*) &message, (int)sizeof(Message));
   Wire.endTransmission();
 }

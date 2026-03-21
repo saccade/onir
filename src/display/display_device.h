@@ -14,14 +14,14 @@ class DisplayDevice {
 public:
   DisplayDevice(const Hardware& hw = no_hardware);
 
-  void update(const DisplayState s) {
-    state = s;
+  void update(const Message s) {
+    message = s;
   }
 
   void refresh();
   void clear();
   
-  DisplayState state;
+  Message message;
   
 private:
 

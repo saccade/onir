@@ -36,7 +36,7 @@ static bool prints(char c) {
   return (c == 0 or (c >= 32 and c < 127));
 }
 
-void print_display(const DisplayState& display) {
+void print_display(const Message& display) {
   bool printable = true;
   for (int i = 0; i < 4; ++i) {
     if (!prints(display.chars[i])) {
@@ -116,8 +116,8 @@ void print_io(const IOState& state) {
 // local copy of dial and display contents (not definitive -- just read the dial!)
 void mirror_device_units(Unit* unit) {
   unit->local_.channel = unit->dial.channel();
-  memcpy(&unit->local_.dial,    &unit->dial.reading,  sizeof(unit->dial.reading));
-  memcpy(&unit->local_.display, &unit->display.state, sizeof(unit->display.state));
+  memcpy(&unit->local_.dial,    &unit->dial.reading,    sizeof(unit->dial.reading));
+  memcpy(&unit->local_.display, &unit->display.message, sizeof(unit->display.message));
 }
 
 void log_io(Unit* unit) {
