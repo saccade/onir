@@ -23,7 +23,7 @@ bool DialDevice::switch_pressed() const {
   return not digitalRead(dispatch(hardware, Function::SWITCH));
 }
 
-void DialDevice::read(Reading& reading) {
+void DialDevice::take(Reading& reading) {
   bool old_clock = clock;
   clock = clock_pin();
   if (clock != old_clock) {

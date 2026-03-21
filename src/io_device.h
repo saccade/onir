@@ -24,7 +24,7 @@ public:
   bool new_channel = false;
 
   void update() {
-    dial->read(buffer.dial);            // update dial buffer from hardware
+    dial->take(buffer.dial);            // update dial buffer from hardware
     display->state = buffer.display;    // push display buffer to hardware
     display->refresh();                 // change the lights if it's time
 

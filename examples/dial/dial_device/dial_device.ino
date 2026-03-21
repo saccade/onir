@@ -34,7 +34,7 @@ void setup() {
 }
 
 void loop() {
-  dial->read(reading);
+  dial->take(reading);
   if (reading.count != count || reading.down_count != down_count || reading.button != button) {
     Serial.print("c: ");
     Serial.print(count = reading.count);

@@ -36,7 +36,7 @@ int Dial::call() {
 
 void Dial::update() {
   if (device) {
-    device->read(reading);
+    device->take(reading);
   } else {
     follow(rhythm, call, change);
   }
