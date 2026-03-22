@@ -1,44 +1,52 @@
 #pragma once
 
+using u_small = unsigned char;
+using s_small = signed char;
+
 // names for logical pin functions.
 
 enum class Function {
   NONE,  // default
-
-    // power pair
-    GROUND,
-    VCC,
-
-    // dial
-    CLOCK,
-    DATA,
-    SWITCH,
-
-    // servo
-    SERVO_L,
-    SERVO_R,
-    // SERVO_3,
-
-    // seven segment digit display outputs
-
-    // segments (anode)
-    DD_A,
-    DD_B,
-    DD_C,
-    DD_D,
-    DD_E,
-    DD_F,
-    DD_G,
-    DD_P,
-
-    // positions (cathode)
-    DD_1,
-    DD_2,
-    DD_3,
-    DD_4,
-    COUNT,  // preserve trailing comma (dr. kraemer is old.)
   
-    };
+  // power pair
+  GROUND,
+  VCC,
+  
+  // dial
+  CLOCK,
+  DATA,
+  SWITCH,
+
+  // motor names
+  MOTOR_L_WHEEL,
+  MOTOR_R_WHEEL,
+  MOTOR_BASE,
+  MOTOR_SHOULDER,
+  MOTOR_ELBOW,
+  MOTOR_WRIST,
+  MOTOR_HAND,
+
+  // seven segment digit display outputs
+
+  // segments (anode)
+  DD_A,
+  DD_B,
+  DD_C,
+  DD_D,
+  DD_E,
+  DD_F,
+  DD_G,
+  DD_P,
+
+  // positions (cathode)
+  DD_1,
+  DD_2,
+  DD_3,
+  DD_4,
+
+  COUNT,  // last item used for size
+  
+};
 
 using Hardware = int[(int)Function::COUNT];
 extern const Hardware no_hardware;
