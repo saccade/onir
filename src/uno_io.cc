@@ -2,10 +2,8 @@
 
 void uno_io(Hardware hardware) {
 
-  for (int fn = (int)Fn::NONE + 1; fn < (int)Fn::COUNT - 1; fn++) {
-    assign(hardware, (Function)fn, -1); // it's rude to yell at the modem
-  }
-
+  clear(hardware);
+  
   // digit display
   assign(hardware, Fn::DD_A, 6);
   assign(hardware, Fn::DD_B, 2);

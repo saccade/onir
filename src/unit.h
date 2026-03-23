@@ -1,6 +1,7 @@
 #include "onir.h"
 #include "display/display.h"
 #include "dial/dial.h"
+#include "motor/motor.h"
 
 class Unit {
 public:
