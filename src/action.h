@@ -21,8 +21,8 @@ enum class Cue {
   // actions
   forward,
   back,
-  spin_clock,
-  spin_counter,
+  spin_clockwise,
+  spin_counterwise,
   go_right,
   go_left,
   back_right,
