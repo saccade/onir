@@ -71,7 +71,7 @@ using Move = int (*)();
 using Call = int (*)(Change& change);
 
 template <typename T>
-using Execute = int (*)(Robot<T>& robot, const Program& program);
+using Execute = int (*)(const Program& program, Resource<T>& resource);
 
 static int follow(Rhythm& rhythm, Call call, Change& change)  {
   keep(rhythm);
@@ -109,12 +109,12 @@ static int follow(Rhythm& rhythm, Move move) {
 }
 
 template <typename T>
-static int follow(Rhythm& rhythm, Robot<T>& robot, Execute<T> execute, const Program& program) {
+static int follow(Rhythm& rhythm, Resource<T>& resource, Execute<T> execute, const Program& program) {
   keep(rhythm);
   if (go(rhythm)) {
     rhythm.last = rhythm.now;
 
-    int result = execute(robot, program);
+    int result = execute(program, resource);
     if (result) {
       rhythm.missed = 0;
     } else {

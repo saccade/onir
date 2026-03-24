@@ -57,8 +57,8 @@ class Servo;
 using Hardware = int[(int)Function::COUNT];
 
 template <typename T>
-struct Robot {
-    T hardware[(int)Function::COUNT];
+struct Resource {
+  T hardware[(int)Function::COUNT] { };
 
     T& operator[](Function f) {
         return hardware[(int)f];

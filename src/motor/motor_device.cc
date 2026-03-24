@@ -18,28 +18,26 @@ MotorDevice::MotorDevice(const Hardware& hardware) : hardware(hardware) {
 void MotorDevice::engage(Function function) {
   Servo* servo = new Servo;
   servo->attach(dispatch(hardware, function));
-  robot[(int)function] = servo;
+  robot[function] = servo;
   set_pulse(function, PULSE_NEUTRAL);
 }
 
 void MotorDevice::release(Function function) {
-  Servo* servo = robot[(int)function];
-  robot[(int)function] = 0;
+  Servo* servo = robot[function];
+  robot[function] = 0;
   servo->detach();
   delete servo;
 }
 
 void MotorDevice::set_pulse(Function function, int usec) {
-  if (robot[(int)function]) {
-    robot[(int)function]->write(usec);
+  if (robot[function]) {
+    robot[function]->write(usec);
   }
 }
 
 void MotorDevice::update() {
-  // follow(rhythm, &move);
-  // follow(rhythm, robot, execute, program);
+  follow(rhythm, robot, execute, program);
 }
-
 
 int MotorDevice::move() {
 //  for () {}

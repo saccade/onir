@@ -14,7 +14,7 @@ int servo_pulse(s_small pitch);
 class Servo;
 
 template <typename T>
-static int execute(Robot<T>& robot, const Program& program) {
+static int execute(const Program& program, Resource<T>& resource) {
   return 0;
 }
 
@@ -35,11 +35,11 @@ private:
 
   Program program;
   const Hardware& hardware;
-  int servo_pulses[(int)Function::COUNT] = { };
-  bool engaged[(int)Function::COUNT] = { };
-  long end_millis[(int)Function::COUNT] = { };
+  Resource<int> servo_pulses;
+  Resource<bool> engaged;
+  Resource<long> end_millis;
 
-  Servo* robot[(int)Function::COUNT] = { };
+  Resource<Servo*> robot;
 
   Rhythm rhythm;
 };
