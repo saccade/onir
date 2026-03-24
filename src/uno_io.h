@@ -1,3 +1,5 @@
+// rename to circuits.h/cc
+
 #pragma once
 
 #include "hardware.h"

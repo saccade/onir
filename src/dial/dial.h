@@ -13,12 +13,12 @@ public:
   void attach(DialDevice* device);
   
   void set_channel(int channel) {
-    rhythm.channel = channel;
     change.channel = channel;
+    rhythm.group = channel;
   }
 
   int channel() {
-    return rhythm.channel;
+    return change.channel;
   }
 
   void update();

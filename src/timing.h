@@ -1,3 +1,5 @@
+#pragma once
+
 struct Change {
   int channel = -1;
   char* buffer = 0;
@@ -14,7 +16,7 @@ struct Rhythm {
   int missed = 0;
 
   // id
-  int channel = -1;
+  int group = -1;
   
   // policy
   int beats = 8;       // eight beats a measure
@@ -25,7 +27,7 @@ struct Rhythm {
 };
 
 static int entrance(const Rhythm& rhythm) {
-  return rhythm.channel % rhythm.beats;  // sign-preserving modulo
+  return rhythm.group % rhythm.beats;  // sign-preserving modulo
 }
 
 static int stick(const Rhythm& rhythm) {
@@ -63,6 +65,7 @@ static bool go(const Rhythm& rhythm) {
 
 void keep(Rhythm& rhythm);
 
+using Move = int (*)();
 using Call = int (*)(Change& change);
 
 static int follow(Rhythm& rhythm, Call call, Change& change)  {
@@ -79,6 +82,24 @@ static int follow(Rhythm& rhythm, Call call, Change& change)  {
     
     return response;
   }
+  return 0;
+}
+
+static int follow(Rhythm& rhythm, Move move) {
+  keep(rhythm);
+  if (go(rhythm)) {
+    rhythm.last = rhythm.now;
+
+    int result = move();
+    if (result) {
+      rhythm.missed = 0;
+    } else {
+      rhythm.missed++;
+    }
+
+    return result;
+  }
+
   return 0;
 }
 

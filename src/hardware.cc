@@ -1,6 +1,7 @@
 #include "hardware.h"
 
 const Hardware no_hardware = { };
+const int hardware_size = (int)Function::COUNT;
 
 int assign(Hardware hardware, Function fn, int pin) {
   return hardware[(int)fn] = pin;

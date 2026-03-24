@@ -17,6 +17,10 @@ enum class Function {
   DATA,
   SWITCH,
 
+  CLOCK_2,
+  DATA_2,
+  SWITCH_2,
+
   // motor names
   MOTOR_L_WHEEL,
   MOTOR_R_WHEEL,
@@ -48,8 +52,12 @@ enum class Function {
   
 };
 
+class Servo;
+
 using Hardware = int[(int)Function::COUNT];
+using Robot = Servo*[(int)Function::COUNT];
 extern const Hardware no_hardware;
+extern const int hardware_size;
 
 int assign(Hardware hardware, Function fn, int pin);
 int dispatch(const Hardware& hardware, Function fn);
