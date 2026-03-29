@@ -5,6 +5,10 @@ using s_small = signed char;
 
 #define UNSET -1
 
+
+const extern int min_channel;
+const extern int max_channel;
+
 // names for logical pin functions.
 
 enum class Function : u_small {

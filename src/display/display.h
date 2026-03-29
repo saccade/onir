@@ -1,12 +1,9 @@
 #pragma once
 
-#include "onir.h"
+#include "program.h"
 #include "timing.h"
 
 // abstract interface for a seven-segment display
-
-#define DISPLAY_DEVICE_CHANNEL 9  // 8 & 9 are just for your stuff.
-#define MIN_CHANNEL 8             // (https://i2cdevices.org/addresses)
 
 class DisplayDevice;
 
@@ -16,6 +13,9 @@ public:
   Display(const Hardware& hardware = no_hardware);
 
   Display(int ch);
+
+  static int call(Change& change);
+  int Display::call();
 
   void init(int channel);
 
@@ -55,20 +55,14 @@ public:
   // call in loop()
   void refresh();
 
-  Message message;
-
   void show_zero(bool show) {
     shows_zero = show;
   }
 
+  Message message;
+
 private:
   DisplayDevice* device = 0;
-
-  int channel = UNSET;  // don't call if nothing will answer. (the modem rings SYN for a minute.)
-
-  const int UPDATE_FREQ_HZ = 50;
-  const int UPDATE_MILLIS = 1000 / UPDATE_FREQ_HZ;
-  long last_update = UNSET;
   bool shows_zero = false;
 
   Rhythm rhythm;
@@ -97,11 +91,7 @@ private:
   }
 
   int absv(int n) {
-    if (n > 0) return n;
-    if (n == 0) return 0;
+    if (n >= 0) return n;
     return -n;
   }
-
-  void send_update();
-  void update_local();
 };

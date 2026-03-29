@@ -21,7 +21,7 @@ struct Rhythm {
   int group = UNSET;
 
   // policy
-  int beats = 8;       // eight beats a measure
+  int beats = 5;       // take five per measure
   int value = 10;      // hang in with the beat
   int calls = 3;       // give them a few tries
   int layoff = 1000;   // hold up just a second

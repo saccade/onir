@@ -1,4 +1,4 @@
-#include "onir.h"
+#include "program.h"
 
 
 void log(const Instruction& s);

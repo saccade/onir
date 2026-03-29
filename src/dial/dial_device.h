@@ -1,6 +1,6 @@
 #pragma once
 
-#include "onir.h"
+#include "program.h"
 
 class DialDevice {
 public:

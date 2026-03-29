@@ -1,7 +1,5 @@
 #pragma once
 
-#include "onir.h"
-
 #include "display.h"
 
 const int N_CHAR_MASKS = 128;  // space for all possible segment-sets.
@@ -19,7 +17,7 @@ public:
   }
 
   void refresh();
-  void clear();
+  void blank();
 
   Message message;
 

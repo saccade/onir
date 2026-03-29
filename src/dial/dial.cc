@@ -19,10 +19,10 @@ void Dial::attach(DialDevice* device) {
 }
 
 static int Dial::call(Change& change) {
-  if (change.channel < MIN_CHANNEL) return 0;
-  
+  if (change.channel < min_channel) return 0;
+
   Wire.requestFrom(change.channel, change.to_read);
-  
+
   if (Wire.available() == change.to_read) {
     Wire.readBytes(change.buffer, change.to_read);
     return change.to_read;

@@ -2,7 +2,7 @@
 
 #include "hardware.h"
 
-#define PROGRAM_SIZE 16
+#define PROGRAM_SIZE 8
 #define ACTION_SIZE 5  // Number of Motions allowed per Action
 
 struct Reading {
@@ -14,6 +14,13 @@ struct Reading {
 struct Message {
   char chars[4] = {0, 0, 0, 0} ;  // characters on display
   s_small point = UNSET;          // values outside [0,3] are pointless.
+
+  void clear() {
+    for (int i = 0; i < 4; i++) {
+      chars[i] = ' ';
+    }
+  }
+
 };
 
 struct Motion {

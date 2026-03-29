@@ -2,9 +2,6 @@
 
 #include "Arduino.h"
 
-const int min_channel = 0x08;        // = 8 -- https://i2cdevices.org/addresses
-const int max_channel = 0x77;        // 0x77 = 119
-
 int selected_channel = min_channel;
 
 Selector::Selector(bool button, const Hardware& hardware) :
@@ -68,7 +65,7 @@ int Selector::get_channel() {
         channel_down();
       }
       value = count();
-      
+
       display_channel();
       echo();
       Serial.print("? ");
@@ -80,7 +77,7 @@ int Selector::get_channel() {
   Serial.print("channel ");
   Serial.println(selected_channel);
   dial->zero();
-  return selected_channel;  
+  return selected_channel;
 }
 
 int Selector::count() {

@@ -10,7 +10,7 @@
 // const int count = 6;
 // int channels[count] = { 8, 9, 10, 11, 12, 13 };
 const int count = 4;
-int channels[count] = { 8, 9, 10, 11};
+int channels[count] = { 8, 9, 10, 11 };
 
 Onir* onir;
 Hardware hardware = {};
@@ -26,7 +26,6 @@ void setup() {
   log_winks = 25;
   uno_io(hardware);
   onir = new Onir(channels, count, hardware);
-  Serial.println("bar");
   onir->display(message);
   Wire.begin();
 }

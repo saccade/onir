@@ -4,17 +4,6 @@
 #include "control.h"
 #include "log.h"
 
-/// xxxx remove
-/// xxxx remove
-/// xxxx remove
-
-#include "Arduino.h"
-
-/// xxxx remove
-/// xxxx remove
-/// xxxx remove
-
-
 const static int margin = 128;
 
 // Splits a string across a handful of displays and keeps them refreshed.
@@ -26,11 +15,6 @@ public:
   }
 
   Screen(Control* control) : control_(control) {
-    Serial.println("foo");
-    delay(1000);
-    Serial.println("foo");
-    delay(100);
-
     clear();
   }
 

@@ -11,20 +11,31 @@ Display::Display(const Hardware& hardware) {
   clear();
 }
 
-Display::Display(int channel) : channel(channel) {
+Display::Display(int channel) {
+  rhythm.group = channel;
+  change.channel = channel;
+  change.buffer = (char*)&message;
+  change.to_write = sizeof(Message);
   clear();
 }
 
+static int Display::call(Change& change) {
+  if (change.channel < min_channel) return 0;
+  Wire.beginTransmission(change.channel);
+  Wire.write(change.buffer, change.to_write);
+  Wire.endTransmission();
+  return 1;
+}
+
+int Display::call() {
+  return call(change);
+}
+
 void Display::refresh() {
+  follow(rhythm, call, change);
   if (device) {
+    device->update(message);
     device->refresh();
-  }
-  if ((long)millis() - last_update > UPDATE_MILLIS) {
-    last_update = millis();
-    send_update();
-    if (device) {
-      device->update(message);  
-    }
   }
 }
 
@@ -35,12 +46,4 @@ String chars(Message message) {
   }
   result[5] = 0;
   return String(result);
-}
-
-// TODO: unify handling for this logic before adding servos.
-void Display::send_update() {
-  if (channel < MIN_CHANNEL) return;
-  Wire.beginTransmission(channel);
-  Wire.write((const byte*) &message, (int)sizeof(Message));
-  Wire.endTransmission();
 }

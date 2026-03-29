@@ -4,8 +4,6 @@
 
 #define MIN_CHANNEL 8
 
-void blank(Message* message);
-
 class Control;
 class Screen;
 

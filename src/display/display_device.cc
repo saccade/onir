@@ -15,11 +15,11 @@ DisplayDevice::DisplayDevice(const Hardware& hardware) : hardware(hardware) {
   for (int i = (int)Function::DD_A; i <= (int)Function::DD_4; i++) {
     pinMode(dispatch(hardware, (Function)i), OUTPUT);
   }
-  blank(&message);
-  clear();
+  message.clear();
+  blank();
 }
 
-void DisplayDevice::clear() {
+void DisplayDevice::blank() {
   for (Function segment : segments) {
     pin_low(segment);
   }
@@ -50,9 +50,10 @@ void DisplayDevice::set_point_pin(bool val) {
 }
 
 void DisplayDevice::refresh() {
+
   int prior_position = position;
   if (prior_position != (position = position_to_show())) {  // redraw display
-    clear();
+    blank();
     for (Function segment : segments) {
       if (segment_masks[(int)segment] & char_masks[(int)message.chars[position]]) {
         pin_high(segment);

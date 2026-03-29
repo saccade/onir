@@ -1,20 +1,18 @@
 #pragma once
 
-#include "onir.h"
+#include "program.h"
 
 #include "dial/dial.h"
 #include "display/display.h"
 
 extern int selected_channel;
-const extern int min_channel;
-const extern int max_channel;
 
 // uses a dial and display to select a numerical I2C channel (int).
 class Selector {
 public:
   Selector(Dial* dial, Display* display, bool button=false, const Hardware& hardware = no_hardware);
 
-  Selector(bool button = false, const Hardware& hardware = no_hardware); 
+  Selector(bool button = false, const Hardware& hardware = no_hardware);
 
   void set_button(bool button) { button_down = button; }
 
@@ -35,7 +33,6 @@ private:
   char hex_digit(int value);
   void display_channel();
   void echo();
-  
+
   const Hardware& hardware;
 };
-

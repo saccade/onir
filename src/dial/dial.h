@@ -1,6 +1,6 @@
 #pragma once
 
-#include "onir.h"
+#include "program.h"
 #include "timing.h"
 
 class DialDevice;
