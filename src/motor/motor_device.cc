@@ -4,7 +4,7 @@
 #include "motor_device.h"
 
 // TODO: add custom per-servo trim (data file?)
-int servo_pulse(s_small pitch) {
+static int servo_pulse(s_small pitch) {
   // // bit shift by 7 ==> divide by 2^7.
   // long magnitude = ((long)pitch * (long)PULSE_HALF_SPAN);
   // return PULSE_NEUTRAL + (magnitude >> 7);
@@ -18,112 +18,91 @@ long end_millis(u_small winks) {
   return millis() + winks * millis_per_wink;
 }
 
-Joint assign(Motion motion) {
-  Joint joint;
-  joint.pulse_usec = servo_pulse(motion.pitch);
-  joint.end_millis = end_millis(motion.winks);
-  return joint;
-}
+MotorDevice::MotorDevice(const Hardware& hardware) : hardware(hardware) { }
 
-MotorDevice::MotorDevice(const Hardware& hardware) : hardware(hardware) {
-  for (Function fn = Function::MOTOR_MAIN; fn < Function::MOTOR_END; fn++) {
-    // rhythm[fn].group = int(fn);
-    // rhythm[fn].layoff = 100;  // quick as a wink
-  }
-}
-
-void MotorDevice::engage(Function function, Target target) {
+Joint* MotorDevice::engage(Function function, Target target, s_small pitch) {
   if (not robot[function]) {
-    Joint& joint = robot[function];
-    joint.servo = new Servo;
-    joint.servo->attach(dispatch(hardware, function));
+    Serial.println("engage");
+    Joint* joint = new Joint();
+    joint->servo = new Servo;
+    joint->target = target;
+    joint->servo->attach(dispatch(hardware, function));
+
+    Serial.println("dispatch: ");
+    Serial.println(hardware[(int)Function::DD_A]);
+    Serial.println(dispatch(hardware, function));
+    joint->pulse_usec = servo_pulse(pitch);
+    joint->target_usec = servo_pulse(pitch);
+    joint->servo->write(joint->pulse_usec);
+    Serial.println(joint->pulse_usec);
+    joint->rhythm.group = int(function);
+    joint->rhythm.layoff = 100;  // quick as a wink
+
+    joint->max_delta = 3;
+
+    robot[function] = joint;
+
   }
 }
 
 void MotorDevice::release(Function function) {
-  Servo* servo = robot[function].servo;
-  if (servo) {
-    robot[function].servo = 0;
-    robot[function] = Joint();
+  Joint* joint = robot[function];
+  if (joint) {
+    Servo* servo = robot[function]->servo;
+    joint->servo = 0;
+    robot[function] = 0;
     servo->detach();
     delete servo;
+    delete joint;
   }
 }
 
-void MotorDevice::assign(const Motion& motion) {
-  if (robot[motion.motor]) {
-    robot[motion.motor] = control(motion);
+void control(Joint* joint, Motion motion) {
+  if (not joint) return;
+
+  joint->target_usec = servo_pulse(motion.pitch);
+  Serial.println("joint->target_usec");
+
+  Serial.println(joint->target_usec);
+  joint->end_millis = end_millis(motion.winks);
+  Serial.println(joint->pulse_usec);
+}
+
+void MotorDevice::assign(Motion motion) {
+  Serial.println("assign");
+  Joint* joint = robot[motion.motor];
+  if (joint) {
+    Serial.print("found ");
+    Serial.println((int)motion.motor);
+    control(joint, motion);
   }
 }
 
-// void MotorDevice::set_pulse(Function function, int usec, long end_ms) {
-//   if (robot[function]) {
-//     robot[function].pulse_usec = usec;
-
-//     robot[function]->write(usec);
-//     if (end_ms) {
-//       robot[function].end_millis = end_ms;
-//     }
-//   }
-// }
-
-static Command MotorDevice::execute(Program& program, Resource<Joint>& robot) {
-  Instruction todo = program.instruction;
-  Command command = todo.command;
-  switch (command) {
-  case Command::none: { }
-  case Command::perform: {
-    for (const Action& action : program.actions) {
-      if (action and action.cue == todo.cue) {
-        for (const Motion& motion: action.motions) {
-          //assign(motion);
-        }
-      }
-    }
-  }
-
-  case Command::extend: {
-    for (const Action& action : program.actions) {
-      if (action and action.cue == todo.cue) {
-        for (const Motion& motion: action.motions) {
-          if (motion.motor == todo.motion.motor) {
-            motion = todo.motion;
-            return Command::extend;
-          }
-          if (true) {} //xxxx
-      }
-    }
-  }
-
-  }
-  case Command::create: {
-  }
-  case Command::condition: {
-  }
-  }
-
-  program.instruction.command = Command::none;  // clear command
-  return command;
-}
-
-void MotorDevice::update() {
-  //follow(rhythm, execute, program, robot);
-}
-
-int MotorDevice::move() {
-//  for () {}
-//  if () {}
-  return 0;
-}
-
-static int MotorDevice::advance(Joint& joint) {
+int MotorDevice::advance(Function function) {
+  Joint* joint = robot[function];
   if (not joint) return 0;
 
-  const int delta = pulse_delta(joint);
+  const int delta = pulse_delta(*joint);
   if (not delta) return 0;
 
-  joint.pulse_usec += delta;
-  joint.servo->write(joint.pulse_usec);
+  joint->pulse_usec += delta;
+  Serial.print(millis());
+  Serial.print(":");
+  Serial.println(joint->pulse_usec);
+  joint->servo->write(joint->pulse_usec);
+  return delta;
+}
+
+int MotorDevice::slam(Function function) {
+  Joint* joint = robot[function];
+  if (not joint) return 0;
+
+  const int delta =  - joint->pulse_usec;
+  if (not delta) return 0;
+
+  joint->pulse_usec = joint->target_usec;
+  joint->servo->write(joint->pulse_usec);
+  return delta;
 }
 
 static bool stop_seek(Joint& joint) {
@@ -145,9 +124,19 @@ static bool stop_spin(Joint& joint) {
 }
 
 static bool hold(Joint& joint) {
+  Serial.println("hold");
   if (not joint.servo) return false;
 
   if (joint.target == Target::position) return stop_seek(joint);
 
   if (joint.target == Target::rotation) return stop_spin(joint);
+}
+
+void MotorDevice::halt() {
+  for (Function fn = Function::MOTOR_MAIN; fn < Function::MOTOR_END; fn++) {
+    Joint* joint = robot[fn];
+    if (joint) {
+      hold(*joint);
+    }
+  }
 }

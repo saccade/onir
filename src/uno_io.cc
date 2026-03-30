@@ -3,7 +3,7 @@
 void uno_io(Hardware hardware) {
 
   clear(hardware);
-  
+
   // digit display
   assign(hardware, Fn::DD_A, 6);
   assign(hardware, Fn::DD_B, 2);
@@ -19,9 +19,10 @@ void uno_io(Hardware hardware) {
   assign(hardware, Fn::DD_4, 8);
 
   // dial encoder
-  
+
   assign(hardware, Fn::CLOCK, 17);   // A3
   assign(hardware, Fn::DATA, 16);    // A2
   assign(hardware, Fn::SWITCH, 15);  // A1
-}
 
+  assign(hardware, Fn::MOTOR_MAIN, 18);  // A4
+}

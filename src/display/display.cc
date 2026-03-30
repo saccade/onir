@@ -13,6 +13,7 @@ Display::Display(const Hardware& hardware) {
 
 Display::Display(int channel) {
   rhythm.group = channel;
+  rhythm.beats = 11;
   change.channel = channel;
   change.buffer = (char*)&message;
   change.to_write = sizeof(Message);

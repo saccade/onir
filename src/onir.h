@@ -1,8 +1,8 @@
 #pragma once
 
-#include "program.h"
+// TODO: convert to sketch.
 
-#define MIN_CHANNEL 8
+#include "program.h"
 
 class Control;
 class Screen;

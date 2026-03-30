@@ -61,7 +61,7 @@ enum class Function : u_small {
 };
 
 
-inline Function& operator++(Function fn) {
+inline Function& operator++(Function& fn) {
   Function ret = fn;
   fn = (Function)((int)fn + 1);
   return ret;

@@ -41,9 +41,9 @@ struct Motion {
 };
 
 enum class Cue : u_small {
-  stop,
-
-  go, // default action to modify
+  none,   // unset
+  stop,   // static action for servo type ("stay there" or "don't spin")
+  go,     // active motion
 
   // actions
   forward,
@@ -72,20 +72,27 @@ enum class Command : u_small {
   condition,  // place condition on cue
 };
 
+static Command done(Command& command)  {
+  Command copy = command;
+  command = Command::none;
+  return copy;
+}
+
 struct Instruction {
-  Command command = Command::none;  // modify robot program
-  Cue cue = Cue::go;                // engage robot program
   s_small channel = UNSET;
 
-  Motion motion;
-  Cue next = Cue::stop;
-
-  Message message;
-  Reading reading;
-
+  Command command = Command::none;  // modify motor cue
   operator bool() const {
     return command != Command::none;
   }
+
+  Cue cue = Cue::go;                // engage motor cue
+  Motion motion;
+  Cue direction = Cue::stop;        // next action / command argument
+
+  Message message;                  // displays
+  Reading reading;                  // sensors
+
 };
 
 // extends Instruction with multi-joint motions

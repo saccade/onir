@@ -9,13 +9,14 @@ const int PULSE_NEUTRAL = 1500;
 // const int PULSE_HALF_SPAN = 500;
 
 // converts motor pitch (signed 8 bit integer) into servo pulse in usec (16 bit)
-int servo_pulse(s_small pitch);
+static int servo_pulse(s_small pitch);
 
 long end_millis(long duration);
 
 enum class Target : u_small {
   position,
   rotation,
+  torque
 };
 
 struct Joint {
@@ -33,7 +34,7 @@ struct Joint {
 
 };
 
-Joint control(Motion motion);
+void control(Joint* joint, Motion motion);
 
 static bool stop_seek(Joint& joint);
 static bool stop_spin(Joint& joint);
@@ -45,17 +46,16 @@ class MotorDevice {
 public:
   MotorDevice(const Hardware& hardware = no_hardware);
 
-  void engage(Function function, Target target);
+  Joint* engage(Function function, Target target, s_small pitch = 0);
   void release(Function function);
-  void assign(const Motion& motion);
+  void assign(Motion motion);
   // void set_pulse(Function function, int usec, long end_ms = 0);
 
   void update();  // call in loop()
   void halt();
 
-  int move();
-
-  static int advance(Joint& joint);
+  int advance(Function function);
+  int slam(Function function);
 
 private:
 
@@ -78,5 +78,5 @@ private:
   static Command execute(Program& program, Resource<Joint>& settings);
 
   const Hardware& hardware;
-  Resource<Joint> robot = {};
+  Resource<Joint*> robot = {};
 };
