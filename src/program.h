@@ -2,7 +2,7 @@
 
 #include "hardware.h"
 
-#define PROGRAM_SIZE 8
+#define PROGRAM_SIZE 16
 #define ACTION_SIZE 5  // Number of Motions allowed per Action
 
 struct Reading {
@@ -21,6 +21,26 @@ struct Reading {
     return not operator==(other);
 
   };
+
+  bool operator<(const Reading& other) const {
+    if (count != other.count) {
+      return count < other.count;
+    }
+    if (down_count != other.down_count) {
+      return down_count < other.down_count;
+    }
+    return false;
+  }
+
+  bool operator>(const Reading& other) const {
+    if (count != other.count) {
+      return count > other.count;
+    }
+    if (down_count != other.down_count) {
+      return down_count > other.down_count;
+    }
+    return false;
+  }
 };
 
 struct Message {
@@ -74,14 +94,17 @@ enum class Cue : u_small {
   count,  // last item used for size
 };
 
+static_assert(PROGRAM_SIZE > (int)Cue::count);
+
 enum class Command : u_small {
   none, //
   perform,    // showtime
 
-  extend,     // add new motion to cue
+  modify,     // add or modify motion for cue
 
   create,     // add new cue (possibly based on existing cue)
   condition,  // place condition on cue
+  forget,
 };
 
 static Command done(Command& command)  {
@@ -114,8 +137,7 @@ public:
 
   void forget();
 
-  // xxxx
-  bool add_motion(Motion motion) {
+  bool modify(Motion motion) {
     if (motion.motor == Function::NONE) return false;
     for (int i = 0; i <= n_motions; i++) {
       if (motion.motor == motions[i].motor) {
@@ -126,7 +148,7 @@ public:
     if (n_motions >= ACTION_SIZE) return false;
     motions[n_motions++] = motion;
     return true;
-  }//xxxxx
+  }
 
   Motion motions[ACTION_SIZE] = { };
 private:

@@ -30,7 +30,6 @@ private:
   bool done();
   int count();
 
-  char hex_digit(int value);
   void display_channel();
   void echo();
 

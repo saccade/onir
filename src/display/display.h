@@ -2,6 +2,7 @@
 
 #include "program.h"
 #include "timing.h"
+#include "util.h"
 
 // abstract interface for a seven-segment display
 
@@ -90,8 +91,4 @@ private:
     }
   }
 
-  int absv(int n) {
-    if (n >= 0) return n;
-    return -n;
-  }
 };

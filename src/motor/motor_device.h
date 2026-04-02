@@ -5,8 +5,9 @@
 #include "program.h"
 #include "timing.h"
 
-const int PULSE_NEUTRAL = 1500;
-// const int PULSE_HALF_SPAN = 500;
+const extern int PULSE_NEUTRAL;
+const extern int PULSE_MAX;
+const extern int PULSE_MIN;
 
 // converts motor pitch (signed 8 bit integer) into servo pulse in usec (16 bit)
 static int servo_pulse(s_small pitch);
@@ -34,11 +35,11 @@ struct Joint {
 
 };
 
-void control(Joint* joint, Motion motion);
+static void control(Joint* joint, Motion motion);
 
-static bool stop_seek(Joint& joint);
-static bool stop_spin(Joint& joint);
-static bool hold(Joint& joint);
+static bool stop_seek(Joint* joint);
+static bool stop_spin(Joint* joint);
+static bool hold(Joint* joint);
 
 class Servo;
 
@@ -50,9 +51,9 @@ public:
 
   void release(Function function);
   void assign(Motion motion);
-  // void set_pulse(Function function, int usec, long end_ms = 0);
 
   void update();  // call in loop()
+  void halt(Function fn);
   void halt();
 
   int advance(Function function);
@@ -73,7 +74,6 @@ private:
   }
 
   Cue active = Cue::stop;
-
   Program program;
 
   static Command execute(Program& program, Resource<Joint>& settings);

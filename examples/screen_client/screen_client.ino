@@ -15,10 +15,7 @@ int channels[count] = { 8, 9, 10, 11 };
 Onir* onir;
 Hardware hardware = {};
 
-Instruction state;
 const char message[64] = "ko labs -- onir --";
-//const char message[64] = "1 at a time";
-
 
 void setup() {
   Serial.begin(9600);

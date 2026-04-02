@@ -46,6 +46,9 @@ public:
 
   Reading reading;
 
+  static u_small active_value(Reading reading);
+  u_small active_value();
+
   void set_clock(Function fn);
   void set_data(Function fn);
   void set_switch(Function fn);

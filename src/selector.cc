@@ -1,5 +1,7 @@
 #include "selector.h"
 
+#include "util.h"
+
 #include "Arduino.h"
 
 int selected_channel = min_channel;
@@ -32,12 +34,6 @@ void Selector::channel_down() {
     Serial.print("min channel = ");
     echo();
   }
-}
-
-char Selector::hex_digit(int value) {
-  if ((value < 0) or (value > 16)) return '-';
-  if (value < 10) return '0' + value;
-  return 'A' + value - 10;
 }
 
 void Selector::display_channel() {

@@ -1,6 +1,8 @@
 #include "dial.h"
 #include "dial_device.h"
 
+#include "util.h"
+
 #include "Arduino.h"
 #include "Wire.h"
 
@@ -62,6 +64,18 @@ bool Dial::release() {
     release_ready = true;
   }
   return false;
+}
+
+static u_small Dial::active_value(Reading reading) {
+  if (reading.button) {
+    return mod(256, reading.down_count);
+  } else {
+    return mod(256, reading.count);
+  }
+}
+
+u_small Dial::active_value() {
+  return active_value(reading);
 }
 
 void Dial::set_clock(Function fn) {
