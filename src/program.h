@@ -1,7 +1,6 @@
 #pragma once
 
-#include "hardware.h"
-#include "data.h"
+#include "timing.h"
 
 #define PROGRAM_SIZE 16
 #define ACTION_SIZE 5  // Number of Motions allowed per Action
@@ -67,7 +66,6 @@ public:
   Motion motions[ACTION_SIZE] = { };
 private:
   int n_motions = 0;
-  void* resource = 0;
 };
 
 class Program {
@@ -80,3 +78,26 @@ public:
   int n_actions = 0;
   Action actions[PROGRAM_SIZE] = { };
 };
+
+
+template <typename T>
+using Execute = int (*)(Program& program, Resource<T>& resource);
+
+template <typename T>
+static int follow(Rhythm& rhythm, Execute<T> execute, Program& program, Resource<T>& resource) {
+  keep(rhythm);
+  if (go(rhythm)) {
+    rhythm.last = rhythm.now;
+
+    int result = execute(program, resource);
+    if (result) {
+      rhythm.missed = 0;
+    } else {
+      rhythm.missed++;
+    }
+
+    return result;
+  }
+
+  return 0;
+}

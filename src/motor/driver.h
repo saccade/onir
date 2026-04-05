@@ -1,6 +1,7 @@
 #pragma once
 
 #include "motor/trimmer.h"
+#include "motor/machine.h"
 
 class Driver {
 public:

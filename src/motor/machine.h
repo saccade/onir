@@ -1,9 +1,7 @@
 #pragma once
 
-//#include "motor.h"
-#include "hardware.h"
-//#include "data.h"
 #include "timing.h"
+#include "trimmer.h"
 
 const extern int PULSE_NEUTRAL;
 const extern int PULSE_MAX;
@@ -33,6 +31,7 @@ struct Joint {
     return servo;
   }
 
+  Trimmer* trimmer = 0;
 };
 
 static void control(Joint* joint, Motion motion);
@@ -47,17 +46,25 @@ class Machine {
 public:
   Machine(const Hardware& hardware = no_hardware);
 
-  Joint* engage(Function function, Target target, s_small pitch = 0);
+  Joint* operator[](Function fn) {
+    Joint* joint = joints[fn];
+    if (not joint) return 0;
+    return joint;
+  }
 
-  void release(Function function);
+  Joint* engage(Function joint, Target target, s_small pitch = 0);
+
+  void release(Function joint);
   void assign(Motion motion);
 
   void update();  // call in loop()
-  void halt(Function fn);
+  void halt(Function joint);
   void halt();
 
-  int advance(Function function);
-  int slam(Function function);
+  int advance(Function joint);
+  int slam(Function joint);
+
+  Trimmer* trimmer(Function joint);
 
 private:
 
@@ -76,5 +83,5 @@ private:
   Cue active = Cue::stop;
 
   const Hardware& hardware;
-  Resource<Joint*> robot = {};
+  Resource<Joint*> joints = {};
 };

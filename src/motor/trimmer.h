@@ -1,12 +1,6 @@
 #pragma once
 
-#include "hardware.h"
-#include "dial/dial.h"
-#include "display/display.h"
-
-#include "machine.h"
-
-
+#include "program.h"
 
 class Trimmer {
 public:

@@ -1,5 +1,6 @@
 #include "circuits.h"
 #include "motor/driver.h"
+#include "util.h"
 
 Driver* driver;
 Machine* machine;

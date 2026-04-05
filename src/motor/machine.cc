@@ -26,7 +26,7 @@ long end_millis(u_small winks) {
 Machine::Machine(const Hardware& hardware) : hardware(hardware) { }
 
 Joint* Machine::engage(Function function, Target target, s_small pitch) {
-  if (not robot[function]) {
+  if (not joints[function]) {
     Joint* joint = new Joint();
     joint->servo = new Servo;
     joint->target = target;
@@ -40,17 +40,17 @@ Joint* Machine::engage(Function function, Target target, s_small pitch) {
 
     joint->max_delta = 3;
 
-    robot[function] = joint;
+    joints[function] = joint;
 
   }
 }
 
 void Machine::release(Function function) {
-  Joint* joint = robot[function];
+  Joint* joint = joints[function];
   if (joint) {
-    Servo* servo = robot[function]->servo;
+    Servo* servo = joints[function]->servo;
     joint->servo = 0;
-    robot[function] = 0;
+    joints[function] = 0;
     servo->detach();
     delete servo;
     delete joint;
@@ -61,19 +61,20 @@ static void control(Joint* joint, Motion motion) {
   if (not joint) return;
 
   joint->target_usec = servo_pulse(motion.pitch);
+  Serial.print("joint->target_usec: ");
   Serial.println(joint->target_usec);
   joint->end_millis = end_millis(motion.winks);
 }
 
 void Machine::assign(Motion motion) {
-  Joint* joint = robot[motion.motor];
+  Joint* joint = joints[motion.motor];
   if (joint) {
     control(joint, motion);
   }
 }
 
 int Machine::advance(Function function) {
-  Joint* joint = robot[function];
+  Joint* joint = joints[function];
   if (not joint) return 0;
 
   const int delta = pulse_delta(*joint);
@@ -94,7 +95,7 @@ void Machine::update() {
 }
 
 int Machine::slam(Function function) {
-  Joint* joint = robot[function];
+  Joint* joint = joints[function];
   if (not joint) return 0;
 
   const int delta =  - joint->pulse_usec;
@@ -136,7 +137,7 @@ static bool hold(Joint* joint) {
 }
 
 void Machine::halt(Function fn) {
-  Joint* joint = robot[fn];
+  Joint* joint = joints[fn];
   if (joint) {
     hold(joint);
   }

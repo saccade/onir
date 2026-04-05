@@ -1,7 +1,6 @@
 #pragma once
 
 #include "data.h"
-#include "program.h"
 
 struct Change {
   int channel = UNSET ;
@@ -71,8 +70,6 @@ void keep(Rhythm& rhythm);
 using Move = int (*)();
 using Call = int (*)(Change& change);
 
-template <typename T>
-using Execute = int (*)(Program& program, Resource<T>& resource);
 
 static int follow(Rhythm& rhythm, Call call, Change& change)  {
   keep(rhythm);
@@ -108,25 +105,3 @@ static int follow(Rhythm& rhythm, Move move) {
 
   return 0;
 }
-
-template <typename T>
-static int follow(Rhythm& rhythm, Execute<T> execute, Program& program, Resource<T>& resource) {
-  keep(rhythm);
-  if (go(rhythm)) {
-    rhythm.last = rhythm.now;
-
-    int result = execute(program, resource);
-    if (result) {
-      rhythm.missed = 0;
-    } else {
-      rhythm.missed++;
-    }
-
-    return result;
-  }
-
-  return 0;
-}
-
-
-//static int advance(Rhythm& rhythm,

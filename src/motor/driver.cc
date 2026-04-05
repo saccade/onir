@@ -30,7 +30,7 @@ static Command Driver::execute(Program& program, Machine& machine) {
         if (motion) {
           action.motion = motion;
           if (action.cue == Cue::drive) {
-            // if (not panel[action.cue]) {
+//            if (not panel[action.cue]) {
             //   panel[action.cue] = new Trimmer(&this, &action.reading, motion.motor);
             // }
           }
