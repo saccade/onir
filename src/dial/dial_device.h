@@ -1,6 +1,6 @@
 #pragma once
 
-#include "program.h"
+#include "data.h"
 
 class DialDevice {
 public:

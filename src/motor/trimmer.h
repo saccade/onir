@@ -1,6 +1,6 @@
 #pragma once
 
-#include "program.h"
+#include "motor/program.h"
 
 class Trimmer {
 public:

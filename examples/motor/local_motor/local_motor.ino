@@ -1,7 +1,7 @@
 #include "Wire.h"
 
-#include "program.h"
 #include "circuits.h"
+#include "motor/program.h"
 
 #include "motor/driver.h"
 #include "dial/dial.h"

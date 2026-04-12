@@ -1,6 +1,6 @@
 #pragma once
 
-#include "program.h"
+#include "data.h"
 #include "timing.h"
 
 class DialDevice;

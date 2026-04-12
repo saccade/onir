@@ -1,7 +1,7 @@
 #pragma once
 
 #include "timing.h"
-#include "program.h"
+#include "motor/program.h"
 
 const extern int PULSE_NEUTRAL;
 const extern int PULSE_MAX;

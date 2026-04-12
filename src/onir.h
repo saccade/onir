@@ -2,7 +2,7 @@
 
 // TODO: convert to sketch.
 
-#include "program.h"
+#include "motor/program.h"
 
 class Control;
 class Screen;
