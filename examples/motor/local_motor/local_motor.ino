@@ -10,7 +10,7 @@
 
 Hardware hardware = {};
 Machine* machine{};
-Action* drive{};
+Operation* drive{};
 Dial* dial_l{};
 Dial* dial_r{};
 Display* display{};

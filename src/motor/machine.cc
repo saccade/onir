@@ -105,11 +105,11 @@ static Command Machine::assign(const Motion& motion) {
   return control(joints[motion.motor], motion);
 }
 
-Function Machine::assign(const Action& action) {
-  if (action.direction != Cue::query) action.extend();
-  Function query = action.motion.motor;
+Function Machine::assign(const Operation& operation) {
+  if (operation.direction != Cue::query) operation.extend();
+  Function query = operation.motion.motor;
   Function response {};
-  for (const Motion* motion : action.motions) {
+  for (const Motion* motion : operation.motions) {
     Command result = assign(motion);
     bool outcome = performative(result);
     if (true) {

@@ -13,10 +13,10 @@ void ll(String str) {
 
 Driver::Driver(Machine& machine) : machine(machine) {
 
-  program[Cue::drive] = new Action(Cue::drive);
+  program[Cue::drive] = new Operation(Cue::drive);
 
-  Action* stop = new Action(Cue::stop);
-  Action* go = new Action(Cue::go);
+  Operation* stop = new Operation(Cue::stop);
+  Operation* go = new Operation(Cue::go);
 
   program[Cue::stop] = stop;
   program[Cue::go] = go;
@@ -79,29 +79,29 @@ static Command Driver::drive(Program& program, Machine& machine) {
       return sign(todo);;                        // updated drive motion
     }
 
-    Action* action_ = program[cue];              // preprogrammed action
+    Operation* operation_ = program[cue];              // preprogrammed operation
     ll("cue");
-    if (not action_) {
+    if (not operation_) {
       if (not motion) {
         return reject(todo);                     // don't know how to do nothing
       } else {
-        action_ = new Action(todo);
+        operation_ = new Operation(todo);
       }
     }
 
-    Action& action = *action_;
-    Function motor = machine.assign(action);   // queried or first found
-    todo.motion = *action[motor];
-    todo.direction = action.direction;
-    todo.reading = action.reading;
-    todo.message = action.message;
+    Operation& operation = *operation_;
+    Function motor = machine.assign(operation);   // queried or first found
+    todo.motion = *operation[motor];
+    todo.direction = operation.direction;
+    todo.reading = operation.reading;
+    todo.message = operation.message;
     return sign(todo);
   }
 
   if (command == Command::copy) {
     Cue direction = todo.direction;
     todo.direction = Cue::none;
-    program[direction] = new Action(todo);
+    program[direction] = new Operation(todo);
   }
 
   // if (command == Command::condition) {

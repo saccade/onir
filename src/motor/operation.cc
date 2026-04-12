@@ -1,13 +1,13 @@
-#include "program.h"
+#include "operation.h"
 
-Action::Action(Cue cue) {
+Operation::Operation(Cue cue) {
   cue = cue;
   extend();
 }
 
-Action::Action(const Instruction& instruction) : Instruction(instruction) { }
+Operation::Operation(const Instruction& instruction) : Instruction(instruction) { }
 
-Command Action::extend(const Instruction& instruction) {
+Command Operation::extend(const Instruction& instruction) {
   if (instruction.direction == Cue::query) return Command::idle;
   const Motion& motion = instruction.motion;
   if (not instruction or not motion) return Command::idle;
@@ -19,6 +19,6 @@ Command Action::extend(const Instruction& instruction) {
   return Command::modify;
 }
 
-Command Action::extend() {
+Command Operation::extend() {
   return extend(*this);
 }

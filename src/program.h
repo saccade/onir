@@ -1,24 +1,6 @@
 #pragma once
 #include "timing.h"
-
-// extends Instruction with multi-joint motions
-// TODO: s/Action/Gesture, move to gesture.h/cc
-class Action : public Instruction {
-public:
-  Action(Cue);
-  Action(const Instruction&);
-  operator bool() {
-    return cue != Cue::none;
-  }
-
-  Command extend(const Instruction& todo);   // update from todo.motion
-  Command extend();                          // update from Action::motion
-
-  Motion* motions[(int)Function::COUNT] = { };
-  Motion*& operator[](Function fn) {
-    return motions[(int)cue];
-  }
-};
+#include "motor/operation.h"
 
 class Program {
 public:
@@ -28,10 +10,10 @@ public:
     return instruction;
   }
 
-  Action*& operator[](Cue cue) {
-    return actions[(int)cue];
+  Operation*& operator[](Cue cue) {
+    return operations[(int)cue];
   }
-  Action* actions[(int)Cue::count] = { };
+  Operation* operations[(int)Cue::count] = { };
 };
 
 template <typename T>
