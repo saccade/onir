@@ -21,7 +21,7 @@ void Dial::attach(DialDevice* device) {
 }
 
 static int Dial::call(Change& change) {
-  if (change.channel < min_channel) return 0;
+  if (is_unset(change.channel)) return 0;
 
   Wire.requestFrom(change.channel, change.to_read);
 

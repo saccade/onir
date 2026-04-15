@@ -52,7 +52,7 @@ struct Message {
 
 };
 
-struct Motion {
+struct Motion {  // TODO: remove default ctor; require a motor(function).
   Function motor = Function::NONE;
   operator bool() const {
     return motor != Function::NONE;

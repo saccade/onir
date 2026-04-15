@@ -3,7 +3,7 @@
 #include "data.h"
 
 struct Change {
-  int channel = UNSET ;
+  int channel = UNSET;
   char* buffer = 0;
   int to_read = 0;
   int to_write = 0;

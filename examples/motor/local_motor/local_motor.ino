@@ -7,7 +7,6 @@
 
 Hardware hardware = {};
 Driver* driver{};
-Operation* drive{};
 
 Instruction drive_l{};
 Dial* dial_l{};
@@ -16,9 +15,10 @@ Instruction drive_r{};
 Dial* dial_r{};
 
 void update_side(Dial* dial, Instruction& instruction) {
-  Reading& reading = dial->update();
-  if (reading != instruction.reading) {
-    instruction.reading = reading;
+  if (dial->update() != instruction.reading) {
+    instruction.reading = dial->reading;
+    instruction.command = Command::perform;
+    instruction.respond = Command::none;
     driver->follow(instruction);
     print_instruction(instruction);
   }

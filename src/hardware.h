@@ -5,6 +5,14 @@ using s_small = signed char;
 
 #define UNSET -1
 
+inline bool const is_unset(const int& value) {
+  return value == UNSET;
+}
+
+inline void unset(int& value) {
+  return value = UNSET;
+}
+
 const extern int min_channel;
 const extern int max_channel;
 
