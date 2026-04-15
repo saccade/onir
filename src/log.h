@@ -1,6 +1,7 @@
 #pragma once
 
 #include "data.h"
+#include "util.h"
 
 void log(const Instruction& s);
 

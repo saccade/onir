@@ -125,7 +125,7 @@ void print_instruction(const Instruction& todo) {
     left_pad(d);
     Serial.print(d);
     Serial.print("; b: ");
-    Serial.print(todo.reading.button ? 1 : 0);
+    Serial.print((int)todo.reading.button);
     Serial.print("}");
   }
   Serial.print(", dir: ");
@@ -135,6 +135,8 @@ void print_instruction(const Instruction& todo) {
   Serial.print(checksum(todo));
   Serial.print(" } (m: ");
   Serial.print(millis());
+  Serial.print("; g: ");
+  Serial.print(gamut<Instruction>());
   Serial.println(")");
 }
 

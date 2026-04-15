@@ -6,7 +6,15 @@
 bool logging = true;
 
 Driver::Driver(Machine& machine) : machine(machine) {
+  init();
+}
 
+Driver::Driver(const Hardware& hardware) : machine(*(new Machine(hardware))) {
+  machine.engage_hardware(Target::rotation);
+  init();
+}
+
+void Driver::init() {
   program[Cue::drive] = new Operation(Cue::drive);
 
   Operation* stop = new Operation(Cue::stop);
@@ -62,13 +70,13 @@ static Command Driver::drive(Program& program, Machine& machine) {
         return sign(todo, machine.assign(todo.motion));       // pass to machine
       }
 
-      return sign(todo);                                 // updated drive motion
+      return sign(todo);                                // updated drive motion
     }
 
-    Operation* operation_ = program[cue];              // preprogrammed operation
+    Operation* operation_ = program[cue];               // preprogrammed operation
     if (not operation_) {
       if (not motion) {
-        return reject(todo);                     // don't know how to do nothing
+        return reject(todo);                            // don't know how to do nothing
       } else {
         operation_ = new Operation(todo);
       }
@@ -89,14 +97,10 @@ static Command Driver::drive(Program& program, Machine& machine) {
     program[direction] = new Operation(todo);
   }
 
-  // if (command == Command::condition) {
-  //   return (todo);
-  // }
-
   return error(todo);
 }
 
-Command Driver::drive(Instruction& todo) {
+Command Driver::follow(Instruction& todo) {
   program.instruction = todo;
   Command result = drive();
   todo = program.instruction;
@@ -108,6 +112,6 @@ Command Driver::drive() {
   if (program) {
     Command response = drive(program, machine);
   }
-  machine.update();
+  machine.advance();
   return mark(program.instruction, response);
 }

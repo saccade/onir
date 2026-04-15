@@ -7,14 +7,17 @@ class Driver {
 public:
 
   Driver(Machine&);
+  Driver(const Hardware&);
 
-  static Command drive(Program& program, Machine& machine);
-  Command drive(Instruction& todo);
+  static Command drive(Program&, Machine&);
+  Command follow(Instruction& todo);
 
   Command drive();
   Command update();
 
 private:
+
+  void init();
 
   static bool zero(Joint* joint, Program& program) {
     if (not joint) return false;

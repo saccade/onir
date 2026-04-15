@@ -1,22 +1,46 @@
+#include "Wire.h"
+
 #include "circuits.h"
 #include "motor/driver.h"
-#include "util.h"
+#include "log.h"
 
-Driver* driver;
-Machine* machine;
 Hardware hardware = {};
+Driver* driver{};
+
+Instruction instruction{};
+
+void on_receive(int message_size) {
+  Wire.readBytes((byte*)&instruction, sizeof(Instruction));
+}
+
+void on_request() {
+  Wire.write((byte*)&instruction, sizeof(Instruction));
+}
+
+const int channel = 0x09;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("start");
   uno_car(hardware);
-  machine = new Machine(hardware);
-  driver = new Driver(*machine);
-  Serial.print("gamut: ");
-  Serial.println(gamut<Instruction>());
+  driver = new Driver(hardware);
+
+  Serial.print("driver (channel ");
+  Serial.print(channel);
+
+  Wire.begin(channel);
+  Wire.onReceive(on_receive);
+  Wire.onRequest(on_request);
+
+  Serial.print("start (~");
+  Serial.print(gamut<Instruction>());
+  Serial.println(" free):");
 }
 
 void loop() {
-  delay(1000);
+  if (instruction) {
+    driver->follow(instruction);
+    print_instruction(instruction);
+  } else {
+    driver->drive();
+  }
 }
-  

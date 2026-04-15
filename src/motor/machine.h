@@ -62,11 +62,12 @@ public:
   Command assign(const Motion*);
   Command assign(const Motion&);
 
-  void update();  // call in loop()
+  int advance(Function joint);
+  void advance();  // call in loop()
+
   void halt(Function joint);
   void halt();
 
-  int advance(Function joint);
   int slam(Function joint);
 
   Trimmer* trimmer(Function joint);

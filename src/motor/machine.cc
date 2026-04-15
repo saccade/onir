@@ -130,7 +130,7 @@ int Machine::advance(Function function) {
   return delta;
 }
 
-void Machine::update() {
+void Machine::advance() {
   for (Function fn = Function::MOTOR_MAIN; fn < Function::MOTOR_END; fn++) {
     advance(fn);
   }
